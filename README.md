@@ -122,7 +122,6 @@ comfyui's gaffer
   * normal: normal map
   
   **tips**:The node from [kijai-ComfyUI-IC-Light](https://github.com/kijai/ComfyUI-IC-Light) project
-  refer to: examples/workflow-gaffer-iclight-fc-text.json
 
 ## Credits
 
