@@ -46,6 +46,12 @@ comfyui's gaffer
   
   * refer to: [Calculate Normal](examples/workflow-gaffer-iclight-fc-normal.json)
 
+* animated
+
+  * refer to: [Calculate Normal](examples/workflow-gaffer-iclight-fc-animated.json)
+
+  * tips: Lighting Preference Requires [ComfyUI-KJNodes](https://github.com/kijai/ComfyUI-KJNodes)
+
 * tips
 
   Model description and input foreground and background images can be obtained [IC-Light](https://github.com/lllyasviel/IC-Light)
