@@ -1,13 +1,13 @@
 # ComfyUI Gaffer
-***************
+
 comfyui's gaffer
 
 ## Important updates
-***************
+
 * 2024-05-12: ComfyUI native implementation of [IC-Light](https://github.com/lllyasviel/IC-Light).
 
 ## Install
-***************
+
 * Recommended use [ComfyUI Manager](https://github.com/ltdrdata/ComfyUI-Manager) for installation.
 
 * Or open the cmd window in the plugin directory of ComfyUI, like ```ComfyUI\custom_nodes```，type    
@@ -28,7 +28,7 @@ comfyui's gaffer
 * Restart ComfyUI.
 
 ## Usage
-***************
+
 
 * Text-Conditioned Model
 
@@ -45,7 +45,7 @@ comfyui's gaffer
   * refer to: [Calculate Normal](examples/workflow-gaffer-iclight-fc-normal.json)
 
 ## Nodes
-***************
+
 
 * **Load ICLight Model Node**
 
@@ -119,7 +119,7 @@ comfyui's gaffer
   refer to: examples/workflow-gaffer-iclight-fc-text.json
 
 ## Credits
-***************
+
 * [IC-Light](https://github.com/lllyasviel/IC-Light)
 * [ComfyUI](https://github.com/comfyanonymous/ComfyUI)
 * [kijai-ComfyUI-IC-Light](https://github.com/kijai/ComfyUI-IC-Light)
