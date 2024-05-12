@@ -1,20 +1,20 @@
 {
-  "last_node_id": 86,
+  "last_node_id": 87,
   "last_link_id": 227,
   "nodes": [
     {
       "id": 28,
       "type": "ImageResize+",
       "pos": [
-        -208.78338063281245,
-        993.0862128203125
+        -271.50151972734375,
+        991.1887652515626
       ],
       "size": {
         "0": 315,
         "1": 218
       },
       "flags": {},
-      "order": 6,
+      "order": 7,
       "mode": 0,
       "inputs": [
         {
@@ -71,15 +71,15 @@
       "id": 68,
       "type": "PreviewImage",
       "pos": [
-        281.2166193671876,
-        1223.0862128203125
+        218.49848027265622,
+        1221.1887652515625
       ],
       "size": {
         "0": 210,
         "1": 246
       },
       "flags": {},
-      "order": 12,
+      "order": 13,
       "mode": 0,
       "inputs": [
         {
@@ -104,7 +104,7 @@
         "1": 46
       },
       "flags": {},
-      "order": 15,
+      "order": 16,
       "mode": 0,
       "inputs": [
         {
@@ -138,8 +138,8 @@
       "id": 65,
       "type": "RemBGSession+",
       "pos": [
-        -538.7833806328116,
-        1263.0862128203125
+        -601.5015197273425,
+        1261.1887652515625
       ],
       "size": {
         "0": 315,
@@ -170,15 +170,15 @@
       "id": 66,
       "type": "EmptyImage",
       "pos": [
-        191.2166193671875,
-        833.0862128203125
+        128.49848027265617,
+        831.1887652515626
       ],
       "size": {
         "0": 315,
         "1": 130
       },
       "flags": {},
-      "order": 9,
+      "order": 10,
       "mode": 0,
       "inputs": [
         {
@@ -223,15 +223,15 @@
       "id": 67,
       "type": "ImageCompositeMasked",
       "pos": [
-        191.2166193671875,
-        1013.0862128203125
+        128.49848027265617,
+        1011.1887652515626
       ],
       "size": {
         "0": 315,
         "1": 146
       },
       "flags": {},
-      "order": 11,
+      "order": 12,
       "mode": 0,
       "inputs": [
         {
@@ -275,15 +275,15 @@
       "id": 64,
       "type": "ImageRemoveBackground+",
       "pos": [
-        -148.7833806328126,
-        1273.0862128203125
+        -211.50151972734392,
+        1271.1887652515625
       ],
       "size": {
         "0": 241.79998779296875,
         "1": 46
       },
       "flags": {},
-      "order": 7,
+      "order": 8,
       "mode": 0,
       "inputs": [
         {
@@ -327,12 +327,12 @@
         157,
         601
       ],
-      "size": [
-        395.8107011407742,
-        101.4305480265773
-      ],
+      "size": {
+        "0": 395.8106994628906,
+        "1": 101.43054962158203
+      },
       "flags": {},
-      "order": 5,
+      "order": 6,
       "mode": 0,
       "inputs": [
         {
@@ -371,7 +371,7 @@
         "1": 200
       },
       "flags": {},
-      "order": 4,
+      "order": 5,
       "mode": 0,
       "inputs": [
         {
@@ -497,7 +497,7 @@
         "1": 581.5648803710938
       },
       "flags": {},
-      "order": 16,
+      "order": 17,
       "mode": 0,
       "inputs": [
         {
@@ -522,7 +522,7 @@
         "1": 46.57838821411133
       },
       "flags": {},
-      "order": 10,
+      "order": 11,
       "mode": 0,
       "inputs": [
         {
@@ -565,7 +565,7 @@
         "1": 474
       },
       "flags": {},
-      "order": 14,
+      "order": 15,
       "mode": 0,
       "inputs": [
         {
@@ -625,7 +625,7 @@
         "1": 178
       },
       "flags": {},
-      "order": 13,
+      "order": 14,
       "mode": 0,
       "inputs": [
         {
@@ -715,12 +715,12 @@
         191,
         1570
       ],
-      "size": [
-        315,
-        178
-      ],
+      "size": {
+        "0": 315,
+        "1": 178
+      },
       "flags": {},
-      "order": 8,
+      "order": 9,
       "mode": 0,
       "inputs": [
         {
@@ -770,13 +770,13 @@
       "id": 9,
       "type": "LoadImage",
       "pos": [
-        -632,
-        853
+        -694.7181390945309,
+        851.10255243125
       ],
-      "size": [
-        315,
-        314.0000305175781
-      ],
+      "size": {
+        "0": 315,
+        "1": 314.0000305175781
+      },
       "flags": {},
       "order": 3,
       "mode": 0,
@@ -804,6 +804,29 @@
         "9041719fd893b223a3c94ec6c7a49245.jpg",
         "image"
       ]
+    },
+    {
+      "id": 87,
+      "type": "Note",
+      "pos": [
+        -758,
+        78
+      ],
+      "size": {
+        "0": 884.5147094726562,
+        "1": 616.7295532226562
+      },
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "properties": {
+        "text": ""
+      },
+      "widgets_values": [
+        "beautiful woman, detailed face, sunshine, outdoor, warm atmosphere\n\nbeautiful woman, detailed face, neon, Wong Kar-wai, warm\n\nbeautiful woman, detailed face, sunshine from window\n\nbeautiful woman, detailed face, warm atmosphere, at home, bedroom\n\nbeautiful woman, detailed face, shadow from window\n\nbeautiful woman, detailed face, sunset over sea\n\nbeautiful woman, detailed face, light and shadow\n\nhandsome boy, detailed face, neon light, city\n\nBuddha, detailed face, sci-fi RGB glowing, cyberpunk\n\nBuddha, detailed face, natural lighting\n\ntoy, detailed face, shadow from window\n\ntoy, detailed face, sunset over sea\n\ndog, magic lit, sci-fi RGB glowing, studio lighting\n\nmysteriou human, warm atmosphere, warm atmosphere, at home, bedroom\n\n"
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
     }
   ],
   "links": [
@@ -1036,8 +1059,8 @@
     {
       "title": "foreground",
       "bounding": [
-        -691,
-        739,
+        -754,
+        737,
         1247,
         757
       ],

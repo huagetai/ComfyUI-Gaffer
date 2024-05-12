@@ -14,8 +14,8 @@ import comfy.model_management
 from comfy.model_base import BaseModel
 from comfy.model_patcher import ModelPatcher
 from nodes import MAX_RESOLUTION
-from .utils.image import generate_gradient_image, LightPosition
-from .utils.patches import  calculate_weight_adjust_channel
+from .utils.image import generate_gradient_image, LightPosition, resize_and_center_crop
+from .utils.patches import calculate_weight_adjust_channel
 
 # logger
 logging.basicConfig(level=logging.INFO)
@@ -31,11 +31,13 @@ else:
     current_paths, _ = folder_paths.folder_names_and_paths[MODEL_TYPE_ICLIGHT]
 folder_paths.folder_names_and_paths[MODEL_TYPE_ICLIGHT] = (current_paths, folder_paths.supported_pt_extensions)
 
+
 class UnetParams(TypedDict):
     input: torch.Tensor
     timestep: torch.Tensor
     c: dict
     cond_or_uncond: torch.Tensor
+
 
 class ICLight:
     def extra_conds(self, **kwargs):
@@ -124,6 +126,7 @@ class ICLightModelLoader:
         LOGGER.info(f"ICLight model loaded from {iclight_name}")
         return (self.iclight,)
 
+
 class ICLightVAEEncoder:
     def __init__(self, vae: VAE):
         assert isinstance(vae.first_stage_model, AutoencoderKL), "vae only supported for AutoencoderKL"
@@ -135,26 +138,28 @@ class ICLightVAEEncoder:
         out_samples = self.vae.encode(pixels)
         self.vae.first_stage_model.regularization.sample = original_sample_mode
         return out_samples
+
+
 class ApplyICLight:
     @classmethod
     def INPUT_TYPES(s):
         return {
             "required": {
-                "model": ("MODEL", ),
-                "vae": ("VAE", ),
-                "iclight": ("ICLIGHT", ),
+                "model": ("MODEL",),
+                "vae": ("VAE",),
+                "iclight": ("ICLIGHT",),
                 "positive": ("CONDITIONING",),
                 "negative": ("CONDITIONING",),
-                "fg_pixels": ("IMAGE", ),
+                "fg_pixels": ("IMAGE",),
                 "multiplier": ("FLOAT", {"default": 1.0, "min": 0.0, "max": 2.0, "step": 0.001}),
             },
             "optional": {
-                "bg_pixels": ("IMAGE", ),
+                "bg_pixels": ("IMAGE",),
             },
         }
 
-    RETURN_TYPES = ("MODEL","CONDITIONING","CONDITIONING","LATENT")
-    RETURN_NAMES = ("model","positive", "negative", "empty_latent")
+    RETURN_TYPES = ("MODEL", "CONDITIONING", "CONDITIONING", "LATENT")
+    RETURN_NAMES = ("model", "positive", "negative", "empty_latent")
     FUNCTION = "apply"
     CATEGORY = "gaffer"
     DESCRIPTION = """"""
@@ -168,6 +173,8 @@ class ApplyICLight:
         if iclight.get("fbc", False):
             if bg_pixels is None:
                 raise ValueError("When using background-conditioned Model, 'bg_pixel' is required")
+            print(fg_pixels.shape)
+            bg_pixels = resize_and_center_crop(bg_pixels, fg_pixels.shape[2], fg_pixels.shape[1])
             bg_samples = vae_encode.encode(bg_pixels)
             concat_samples = torch.cat((fg_samples, bg_samples), dim=1)
         else:
@@ -200,6 +207,7 @@ class ApplyICLight:
                 c.append(n)
             out_conds.append(c)
         return out_conds
+
     def _work_model_add_patch_accept_multi_channel_inputs(self, work_model):
         """Patch ComfyUI's LoRA weight application to accept multi-channel inputs. Thanks @huchenlei"""
         try:
@@ -213,8 +221,9 @@ class ApplyICLight:
 
         new_extra_conds = types.MethodType(bound_extra_conds, work_model.model)
         work_model.add_object_patch("extra_conds", new_extra_conds)
+
     @staticmethod
-    def  _work_model_add_patches_iclight(work_model, iclight):
+    def _work_model_add_patches_iclight(work_model, iclight):
         device = comfy.model_management.get_torch_device()
         dtype = comfy.model_management.unet_dtype()
         ic_model_state_dict = iclight.get("sd_dict", {})
@@ -248,6 +257,7 @@ class ApplyICLight:
 
         work_model.set_model_unet_function_wrapper(wrapper_func)
 
+
 class LightSource:
     @classmethod
     def INPUT_TYPES(s):
@@ -257,8 +267,8 @@ class LightSource:
                 "multiplier": ("FLOAT", {"default": 1.0, "min": 0.0, "max": 100.0, "step": 0.001}),
                 "start_color": ("STRING", {"default": "#FFFFFF"}),
                 "end_color": ("STRING", {"default": "#000000"}),
-                "width": ("INT", { "default": 512, "min": 0, "max": MAX_RESOLUTION, "step": 8, }),
-                "height": ("INT", { "default": 512, "min": 0, "max": MAX_RESOLUTION, "step": 8, })
+                "width": ("INT", {"default": 512, "min": 0, "max": MAX_RESOLUTION, "step": 8, }),
+                "height": ("INT", {"default": 512, "min": 0, "max": MAX_RESOLUTION, "step": 8, })
             }
         }
 
@@ -275,10 +285,11 @@ specified in RGB or hex format.
     def execute(self, light_position, multiplier, start_color, end_color, width, height):
         def toRgb(color):
             if color.startswith('#') and len(color) == 7:  # e.g. "#RRGGBB"
-                color_rgb =tuple(int(color[i:i+2], 16) for i in (1, 3, 5))
+                color_rgb = tuple(int(color[i:i + 2], 16) for i in (1, 3, 5))
             else:  # e.g. "255,255,255"
                 color_rgb = tuple(int(i) for i in color.split(','))
             return color_rgb
+
         lightPosition = LightPosition(light_position)
         start_color_rgb = toRgb(start_color)
         end_color_rgb = toRgb(end_color)
@@ -287,6 +298,7 @@ specified in RGB or hex format.
         image = image.astype(np.float32) / 255.0
         image = torch.from_numpy(image)[None,]
         return (image,)
+
 
 class CalculateNormalMap:
     @classmethod
@@ -399,6 +411,7 @@ class CalculateNormalMap:
         normal = (normal + 1.0) / 2.0
         normal = torch.clamp(normal, 0, 1)
         return normal
+
 
 NODE_CLASS_MAPPINGS = {
     "ICLightModelLoader": ICLightModelLoader,

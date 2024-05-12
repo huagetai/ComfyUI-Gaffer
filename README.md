@@ -30,6 +30,8 @@ comfyui's gaffer
 ## Usage
 
 
+
+
 * Text-Conditioned Model
 
   * refer to: [Text + foreground Conditioned](examples/workflow-gaffer-iclight-fc-text.json)
@@ -43,6 +45,10 @@ comfyui's gaffer
 * Calculate Normal
   
   * refer to: [Calculate Normal](examples/workflow-gaffer-iclight-fc-normal.json)
+
+* tips
+
+  Model description and input foreground and background images can be obtained [IC-Light](https://github.com/lllyasviel/IC-Light)
 
 ## Nodes
 

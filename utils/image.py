@@ -2,6 +2,10 @@
 import numpy as np
 from enum import Enum
 
+import torch
+import comfy
+
+
 class LightPosition(Enum):
     LEFT = "Left Light"
     RIGHT = "Right Light"
@@ -12,7 +16,9 @@ class LightPosition(Enum):
     BOTTOM_LEFT = "Bottom Left Light"
     BOTTOM_RIGHT = "Bottom Right Light"
 
-def generate_gradient_image(width:int, height:int, start_color: tuple, end_color: tuple, multiplier: float, lightPosition:LightPosition):
+
+def generate_gradient_image(width: int, height: int, start_color: tuple, end_color: tuple, multiplier: float,
+                            lightPosition: LightPosition):
     """
     Generate a gradient image with a light source effect.
 
@@ -29,33 +35,33 @@ def generate_gradient_image(width:int, height:int, start_color: tuple, end_color
     """
     # Create a gradient from 0 to 1 and apply multiplier
     if lightPosition == LightPosition.LEFT:
-        gradient = np.tile(np.linspace(0, 1, width)**multiplier, (height, 1))
+        gradient = np.tile(np.linspace(0, 1, width) ** multiplier, (height, 1))
     elif lightPosition == LightPosition.RIGHT:
-        gradient = np.tile(np.linspace(1, 0, width)**multiplier, (height, 1))
+        gradient = np.tile(np.linspace(1, 0, width) ** multiplier, (height, 1))
     elif lightPosition == LightPosition.TOP:
-        gradient = np.tile(np.linspace(0, 1, height)**multiplier, (width, 1)).T
+        gradient = np.tile(np.linspace(0, 1, height) ** multiplier, (width, 1)).T
     elif lightPosition == LightPosition.BOTTOM:
-        gradient = np.tile(np.linspace(1, 0, height)**multiplier, (width, 1)).T
+        gradient = np.tile(np.linspace(1, 0, height) ** multiplier, (width, 1)).T
     elif lightPosition == LightPosition.BOTTOM_RIGHT:
-        x = np.linspace(1, 0, width)**multiplier
-        y = np.linspace(1, 0, height)**multiplier
+        x = np.linspace(1, 0, width) ** multiplier
+        y = np.linspace(1, 0, height) ** multiplier
         x_mesh, y_mesh = np.meshgrid(x, y)
-        gradient = np.sqrt(x_mesh**2 + y_mesh**2) / np.sqrt(2.0)
+        gradient = np.sqrt(x_mesh ** 2 + y_mesh ** 2) / np.sqrt(2.0)
     elif lightPosition == LightPosition.BOTTOM_LEFT:
-        x = np.linspace(0, 1, width)**multiplier
-        y = np.linspace(1, 0, height)**multiplier
+        x = np.linspace(0, 1, width) ** multiplier
+        y = np.linspace(1, 0, height) ** multiplier
         x_mesh, y_mesh = np.meshgrid(x, y)
-        gradient = np.sqrt(x_mesh**2 + y_mesh**2) / np.sqrt(2.0)
+        gradient = np.sqrt(x_mesh ** 2 + y_mesh ** 2) / np.sqrt(2.0)
     elif lightPosition == LightPosition.TOP_RIGHT:
-        x = np.linspace(1, 0, width)**multiplier
-        y = np.linspace(0, 1, height)**multiplier
+        x = np.linspace(1, 0, width) ** multiplier
+        y = np.linspace(0, 1, height) ** multiplier
         x_mesh, y_mesh = np.meshgrid(x, y)
-        gradient = np.sqrt(x_mesh**2 + y_mesh**2) / np.sqrt(2.0)
+        gradient = np.sqrt(x_mesh ** 2 + y_mesh ** 2) / np.sqrt(2.0)
     elif lightPosition == LightPosition.TOP_LEFT:
-        x = np.linspace(0, 1, width)**multiplier
-        y = np.linspace(0, 1, height)**multiplier
+        x = np.linspace(0, 1, width) ** multiplier
+        y = np.linspace(0, 1, height) ** multiplier
         x_mesh, y_mesh = np.meshgrid(x, y)
-        gradient = np.sqrt(x_mesh**2 + y_mesh**2) / np.sqrt(2.0)
+        gradient = np.sqrt(x_mesh ** 2 + y_mesh ** 2) / np.sqrt(2.0)
     else:
         raise ValueError(f"Unsupported position. Choose from {', '.join([member.value for member in LightPosition])}.")
 
@@ -63,6 +69,29 @@ def generate_gradient_image(width:int, height:int, start_color: tuple, end_color
     gradient_img = np.zeros((height, width, 3), dtype=np.float32)
     for i in range(3):
         gradient_img[..., i] = start_color[i] + (end_color[i] - start_color[i]) * gradient
-    
+
     gradient_img = np.clip(gradient_img, 0, 255).astype(np.uint8)
     return gradient_img
+
+
+def p(image):
+    return image.permute([0, 3, 1, 2])
+
+
+def pb(image):
+    return image.permute([0, 2, 3, 1])
+
+
+def resize_and_center_crop(image: torch.Tensor, target_width: int, target_height: int):
+    _, original_height, original_width, _ = image.shape
+    if original_height == 0 or original_width == 0:
+        raise ValueError("The width and height of the image cannot be 0")
+
+    if original_width == target_width and original_height == target_height:
+        return image
+
+    outputs = p(image)
+    outputs = comfy.utils.common_upscale(outputs, target_width, target_height, "lanczos", "center")
+    outputs = pb(outputs)
+
+    return outputs

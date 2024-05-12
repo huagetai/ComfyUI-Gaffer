@@ -14,7 +14,7 @@
         "1": 200
       },
       "flags": {},
-      "order": 8,
+      "order": 6,
       "mode": 0,
       "inputs": [
         {
@@ -53,7 +53,7 @@
         "1": 146
       },
       "flags": {},
-      "order": 16,
+      "order": 12,
       "mode": 0,
       "inputs": [
         {
@@ -104,7 +104,7 @@
         "1": 246
       },
       "flags": {},
-      "order": 18,
+      "order": 14,
       "mode": 0,
       "inputs": [
         {
@@ -129,7 +129,7 @@
         "1": 46
       },
       "flags": {},
-      "order": 17,
+      "order": 13,
       "mode": 0,
       "inputs": [
         {
@@ -171,7 +171,7 @@
         "1": 489.39794921875
       },
       "flags": {},
-      "order": 19,
+      "order": 15,
       "mode": 0,
       "inputs": [
         {
@@ -196,7 +196,7 @@
         "1": 130
       },
       "flags": {},
-      "order": 13,
+      "order": 10,
       "mode": 0,
       "inputs": [
         {
@@ -249,7 +249,7 @@
         "1": 180
       },
       "flags": {},
-      "order": 12,
+      "order": 9,
       "mode": 0,
       "inputs": [
         {
@@ -465,7 +465,7 @@
         "1": 474
       },
       "flags": {},
-      "order": 15,
+      "order": 11,
       "mode": 0,
       "inputs": [
         {
@@ -504,7 +504,7 @@
         "Node name for S&R": "KSampler"
       },
       "widgets_values": [
-        995253983530181,
+        995253983530182,
         "increment",
         20,
         2,
@@ -525,7 +525,7 @@
         "1": 46
       },
       "flags": {},
-      "order": 11,
+      "order": 8,
       "mode": 0,
       "inputs": [
         {
@@ -563,153 +563,6 @@
       }
     },
     {
-      "id": 90,
-      "type": "PreviewImage",
-      "pos": [
-        212,
-        1521
-      ],
-      "size": [
-        210,
-        246
-      ],
-      "flags": {},
-      "order": 14,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "images",
-          "type": "IMAGE",
-          "link": 223
-        }
-      ],
-      "properties": {
-        "Node name for S&R": "PreviewImage"
-      }
-    },
-    {
-      "id": 91,
-      "type": "GroundingDinoModelLoader (segment anything)",
-      "pos": [
-        -656,
-        1616
-      ],
-      "size": {
-        "0": 315,
-        "1": 58
-      },
-      "flags": {},
-      "order": 3,
-      "mode": 0,
-      "outputs": [
-        {
-          "name": "GROUNDING_DINO_MODEL",
-          "type": "GROUNDING_DINO_MODEL",
-          "links": [
-            224
-          ],
-          "shape": 3
-        }
-      ],
-      "properties": {
-        "Node name for S&R": "GroundingDinoModelLoader (segment anything)"
-      },
-      "widgets_values": [
-        "GroundingDINO_SwinB (938MB)"
-      ]
-    },
-    {
-      "id": 89,
-      "type": "SAMLoader",
-      "pos": [
-        -647,
-        1473
-      ],
-      "size": {
-        "0": 315,
-        "1": 82
-      },
-      "flags": {},
-      "order": 4,
-      "mode": 0,
-      "outputs": [
-        {
-          "name": "SAM_MODEL",
-          "type": "SAM_MODEL",
-          "links": [
-            221
-          ],
-          "shape": 3
-        }
-      ],
-      "properties": {
-        "Node name for S&R": "SAMLoader"
-      },
-      "widgets_values": [
-        "sam_vit_h_4b8939.pth",
-        "Prefer GPU"
-      ]
-    },
-    {
-      "id": 88,
-      "type": "GroundingDinoSAMSegment (segment anything)",
-      "pos": [
-        -273,
-        1501
-      ],
-      "size": {
-        "0": 330,
-        "1": 122
-      },
-      "flags": {},
-      "order": 10,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "sam_model",
-          "type": "SAM_MODEL",
-          "link": 221,
-          "slot_index": 0
-        },
-        {
-          "name": "grounding_dino_model",
-          "type": "GROUNDING_DINO_MODEL",
-          "link": 224,
-          "slot_index": 1
-        },
-        {
-          "name": "image",
-          "type": "IMAGE",
-          "link": 222
-        }
-      ],
-      "outputs": [
-        {
-          "name": "IMAGE",
-          "type": "IMAGE",
-          "links": [
-            223
-          ],
-          "shape": 3,
-          "slot_index": 0
-        },
-        {
-          "name": "MASK",
-          "type": "MASK",
-          "links": [],
-          "shape": 3,
-          "slot_index": 1
-        }
-      ],
-      "properties": {
-        "Node name for S&R": "GroundingDinoSAMSegment (segment anything)"
-      },
-      "widgets_values": [
-        "Buddha",
-        0.3
-      ]
-    },
-    {
       "id": 28,
       "type": "ImageResize+",
       "pos": [
@@ -721,7 +574,7 @@
         "1": 218
       },
       "flags": {},
-      "order": 9,
+      "order": 7,
       "mode": 0,
       "inputs": [
         {
@@ -780,12 +633,12 @@
         -754,
         26
       ],
-      "size": [
-        884.5146992123616,
-        616.7295773388598
-      ],
+      "size": {
+        "0": 884.5147094726562,
+        "1": 616.7295532226562
+      },
       "flags": {},
-      "order": 5,
+      "order": 3,
       "mode": 0,
       "properties": {
         "text": ""
@@ -808,7 +661,7 @@
         "1": 200
       },
       "flags": {},
-      "order": 7,
+      "order": 5,
       "mode": 0,
       "inputs": [
         {
@@ -839,23 +692,22 @@
       "id": 9,
       "type": "LoadImage",
       "pos": [
-        -676.6149752562527,
-        834.9773755650289
+        -677,
+        835
       ],
       "size": {
         "0": 315,
         "1": 314.0000305175781
       },
       "flags": {},
-      "order": 6,
+      "order": 4,
       "mode": 0,
       "outputs": [
         {
           "name": "IMAGE",
           "type": "IMAGE",
           "links": [
-            123,
-            222
+            123
           ],
           "shape": 3,
           "slot_index": 0
@@ -871,7 +723,7 @@
         "Node name for S&R": "LoadImage"
       },
       "widgets_values": [
-        "i11 (1).png",
+        "i3 (4).png",
         "image"
       ]
     }
@@ -1046,38 +898,6 @@
       "VAE"
     ],
     [
-      221,
-      89,
-      0,
-      88,
-      0,
-      "SAM_MODEL"
-    ],
-    [
-      222,
-      9,
-      0,
-      88,
-      2,
-      "IMAGE"
-    ],
-    [
-      223,
-      88,
-      0,
-      90,
-      0,
-      "IMAGE"
-    ],
-    [
-      224,
-      91,
-      0,
-      88,
-      1,
-      "GROUNDING_DINO_MODEL"
-    ],
-    [
       227,
       28,
       0,
@@ -1108,8 +928,8 @@
       "bounding": [
         -753,
         712,
-        1353,
-        1133
+        1318,
+        809
       ],
       "color": "#3f789e",
       "font_size": 24,
@@ -1121,8 +941,8 @@
     "ds": {
       "scale": 0.6303940863128713,
       "offset": {
-        "0": 1156.0904260493119,
-        "1": 112.14921539744063
+        "0": 1101.0454934374645,
+        "1": 77.72630364882095
       }
     }
   },
