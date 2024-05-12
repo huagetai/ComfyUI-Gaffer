@@ -29,7 +29,7 @@ comfyui's gaffer
 
 ## Usage
 
-
+![ALL Model](image/all.png)
 
 
 * Text-Conditioned Model
