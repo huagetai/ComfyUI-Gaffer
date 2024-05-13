@@ -6,11 +6,11 @@ import torch
 import numpy as np
 import folder_paths
 import comfy
+import comfy.model_management as model_management
 from comfy.sd import VAE
 from comfy.utils import load_torch_file
 from comfy.diffusers_convert import convert_unet_state_dict
 from comfy.ldm.models.autoencoder import AutoencoderKL
-import comfy.model_management
 from comfy.model_base import BaseModel
 from comfy.model_patcher import ModelPatcher
 from nodes import MAX_RESOLUTION
@@ -165,7 +165,12 @@ class ApplyICLight:
     DESCRIPTION = """"""
 
     def apply(self, model, vae: VAE, iclight, positive, negative, fg_pixels, multiplier, bg_pixels=None):
+        device = model_management.get_torch_device()
+        dtype = model_management.unet_dtype()
+        if dtype not in [torch.float32, torch.float16, torch.bfloat16]:
+            dtype = torch.float16 if model_management.should_use_fp16() else torch.float32
         work_model = model.clone()
+
         vae_encode = ICLightVAEEncoder(vae)
 
         fg_samples = vae_encode.encode(fg_pixels)
@@ -182,15 +187,14 @@ class ApplyICLight:
 
         base_model: BaseModel = work_model.model
         scale_factor = base_model.model_config.latent_format.scale_factor
-        concat_conds: torch.Tensor = concat_samples * scale_factor * multiplier
+        concat_conds = concat_samples * scale_factor * multiplier
         concat_conds = torch.cat([c[None, ...] for c in concat_conds], dim=1)
 
         out_latent = torch.zeros_like(fg_samples)
 
         self._work_model_set_model_unet_function_wrapper(work_model, concat_conds)
-        self._work_model_add_patches_iclight(work_model, iclight)
-
-        # self._work_model_add_patch_accept_multi_channel_inputs(work_model)
+        self._work_model_add_patches_iclight(work_model, iclight, device, dtype)
+        self._work_model_add_patch_accept_multi_channel_inputs(work_model)
         # out_conditionings = self._create_conditionings(positive, negative, concat_conds)
 
         return (work_model, positive, negative, {"samples": out_latent})
@@ -223,9 +227,7 @@ class ApplyICLight:
         work_model.add_object_patch("extra_conds", new_extra_conds)
 
     @staticmethod
-    def _work_model_add_patches_iclight(work_model, iclight):
-        device = comfy.model_management.get_torch_device()
-        dtype = comfy.model_management.unet_dtype()
+    def _work_model_add_patches_iclight(work_model, iclight, device, dtype):
         ic_model_state_dict = iclight.get("sd_dict", {})
         work_model.add_patches(
             patches={
@@ -236,7 +238,7 @@ class ApplyICLight:
 
     @staticmethod
     def _work_model_set_model_unet_function_wrapper(work_model, concat_conds):
-        def apply_concat_conds(params: UnetParams) -> UnetParams:
+        def apply_c_concat(params: UnetParams) -> UnetParams:
             """Apply c_concat on unet call."""
             sample = params["input"]
             params["c"]["c_concat"] = torch.cat(
@@ -253,7 +255,7 @@ class ApplyICLight:
         existing_wrapper = work_model.model_options.get("model_function_wrapper", unet_dummy_apply)
 
         def wrapper_func(unet_apply: Callable, params: UnetParams):
-            return existing_wrapper(unet_apply, params=apply_concat_conds(params))
+            return existing_wrapper(unet_apply, params=apply_c_concat(params))
 
         work_model.set_model_unet_function_wrapper(wrapper_func)
 
