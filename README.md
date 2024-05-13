@@ -100,7 +100,7 @@ comfyui's gaffer
   ![Simple Light Source Node](image/node_simple-light-source.png)
 
   input:
-  * light_position: Left Light, Right Light, Top Light, Bottom Light, Top Left Light, Top Right Light, Bottom Left Light, Bottom Right Light"
+  * light_position: Left Light, Right Light, Top Light, Bottom Light, Top Left Light, Top Right Light, Bottom Left Light, Bottom Right Light
   * multiplier: strength of Lighting Preference
   * start_color: start color of Lighting Preference
   * end_color: end color of Lighting Preference
@@ -121,10 +121,10 @@ comfyui's gaffer
   ![Calculate Normal Map](image/node_calculate_normal_map.png)
 
   input:
-  * images: The name of the ICLight model to load. 
-  * mask: The name of the ICLight model to load.
-  * sigma: The name of the ICLight model to load.
-  * center_input_range:
+  * images: A sequence of input images 
+  * mask: Optional, a mask image to specify the computation region.
+  * sigma: The standard deviation for Gaussian blur, controlling the smoothness of the normal calculation.
+  * center_input_range: The range used to center the input images.
   
   output:
   * normal: normal map
