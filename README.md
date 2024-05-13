@@ -100,7 +100,7 @@ comfyui's gaffer
   ![Simple Light Source Node](image/node_simple-light-source.png)
 
   input:
-  * light_position: The name of the ICLight model to load.
+  * light_position: Left Light, Right Light, Top Light, Bottom Light, Top Left Light, Top Right Light, Bottom Left Light, Bottom Right Light"
   * multiplier: strength of Lighting Preference
   * start_color: start color of Lighting Preference
   * end_color: end color of Lighting Preference
@@ -111,6 +111,8 @@ comfyui's gaffer
   output:
   * image: Lighting Preference.
   
+  tips:
+  * different effects can be achieved by setting the start color and end color.
 
 * **Calculate Normal Map Node**
 
