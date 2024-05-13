@@ -73,7 +73,7 @@ class ICLightModelLoader:
         """
         Initializes the ICLight model loader with default state.
         """
-        self.iclight = {"sd_dict": None, "fbc": False}
+        self.iclight = {"model": None, "sd_dict": None, "fbc": False}
 
     @classmethod
     def INPUT_TYPES(cls):
@@ -112,14 +112,17 @@ class ICLightModelLoader:
             LOGGER.error(error_message)
             raise Exception(error_message)
 
-        # Loads the model securely and converts it to a hardware-optimized precision
+        # Loads the model securely
         model = load_torch_file(ckpt_path, safe_load=True)
+
+        # converts it to a hardware-optimized precision
         sd_dict = convert_unet_state_dict(model)
 
         # Optimizes performance by converting the model's precision on demand
         sd_dict = {key: sd_dict[key].half() for key in sd_dict.keys()}
 
         # Updates the internal state to reflect the loaded model details
+        self.iclight['model'] = model
         self.iclight['sd_dict'] = sd_dict
         self.iclight['fbc'] = 'fbc' in iclight_name.lower()
 
@@ -151,7 +154,7 @@ class ApplyICLight:
                 "positive": ("CONDITIONING",),
                 "negative": ("CONDITIONING",),
                 "fg_pixels": ("IMAGE",),
-                "multiplier": ("FLOAT", {"default": 1.0, "min": 0.0, "max": 2.0, "step": 0.001}),
+                "multiplier": ("FLOAT", {"default": 1.0, "min": 0.0, "max": 10.0, "step": 0.001}),
             },
             "optional": {
                 "bg_pixels": ("IMAGE",),
@@ -192,39 +195,23 @@ class ApplyICLight:
 
         out_latent = torch.zeros_like(fg_samples)
 
-        self._work_model_set_model_unet_function_wrapper(work_model, concat_conds)
+        self._patch_accept_multi_channel_inputs()
         self._work_model_add_patches_iclight(work_model, iclight, device, dtype)
-        self._work_model_add_patch_accept_multi_channel_inputs(work_model)
-        # out_conditionings = self._create_conditionings(positive, negative, concat_conds)
+
+        self._work_model_set_model_unet_function_wrapper(work_model, concat_conds)
+
+        # positive, negative = self._create_conditionings(positive, negative, concat_conds)
+        # self._work_model_bound_extra_conds(work_model)
 
         return (work_model, positive, negative, {"samples": out_latent})
 
     @staticmethod
-    def _create_conditionings(positive, negative, concat_conds: torch.Tensor):
-        out_conds = []
-        for conditioning in [positive, negative]:
-            c = []
-            for t in conditioning:
-                d = t[1].copy()
-                d["concat_latent_image"] = concat_conds
-                n = [t[0], d]
-                c.append(n)
-            out_conds.append(c)
-        return out_conds
-
-    def _work_model_add_patch_accept_multi_channel_inputs(self, work_model):
-        """Patch ComfyUI's LoRA weight application to accept multi-channel inputs. Thanks @huchenlei"""
+    def _patch_accept_multi_channel_inputs():
+        """Patch ComfyUI's LoRA weight application to accept multi-channel inputs."""
         try:
             ModelPatcher.calculate_weight = calculate_weight_adjust_channel(ModelPatcher.calculate_weight)
         except:
-            raise Exception(" Could not patch calculate_weight")
-
-        # Mimic the existing IP2P class to enable extra_conds
-        def bound_extra_conds(self, **kwargs):
-            return ICLight.extra_conds(self, **kwargs)
-
-        new_extra_conds = types.MethodType(bound_extra_conds, work_model.model)
-        work_model.add_object_patch("extra_conds", new_extra_conds)
+            raise Exception("Could not patch calculate_weight")
 
     @staticmethod
     def _work_model_add_patches_iclight(work_model, iclight, device, dtype):
@@ -258,6 +245,28 @@ class ApplyICLight:
             return existing_wrapper(unet_apply, params=apply_c_concat(params))
 
         work_model.set_model_unet_function_wrapper(wrapper_func)
+
+    @staticmethod
+    def _create_conditionings(positive, negative, concat_conds: torch.Tensor):
+        out_conds = []
+        for conditioning in [positive, negative]:
+            c = []
+            for t in conditioning:
+                d = t[1].copy()
+                d["concat_latent_image"] = concat_conds
+                n = [t[0], d]
+                c.append(n)
+            out_conds.append(c)
+        return out_conds
+
+    @staticmethod
+    def _work_model_bound_extra_conds(work_model):
+        # Mimic the existing IP2P class to enable extra_conds
+        def bound_extra_conds(self, **kwargs):
+            return ICLight.extra_conds(self, **kwargs)
+
+        new_extra_conds = types.MethodType(bound_extra_conds, work_model.model)
+        work_model.add_object_patch("extra_conds", new_extra_conds)
 
 
 class LightSource:
