@@ -423,16 +423,60 @@ class CalculateNormalMap:
         normal = torch.clamp(normal, 0, 1)
         return normal
 
+class GrayScaler:
+    """Class to scale image regions to grey based on provided masks."""
+    @classmethod
+    def INPUT_TYPES(s):
+        return {
+            "required": {
+                "image": ("IMAGE",),
+                "mask": ("MASK",),
+            }
+        }
+
+    CATEGORY = "gaffer"
+    RETURN_TYPES = ("IMAGE",)
+    FUNCTION = "apply"
+
+    def apply(self, image: torch.Tensor, mask: torch.Tensor):
+        """
+        Applies grey scaling to image regions as indicated by the mask.
+
+        Args:
+            image: torch.Tensor: The input image tensor.
+            mask: torch.Tensor: A mask tensor where 1 indicates areas to be converted to grey.
+
+        Returns:
+            tuple: A tuple containing the image with masked regions turned grey.
+        """
+        # Validate inputs
+        if not isinstance(image, torch.Tensor) or not isinstance(mask, torch.Tensor):
+            raise ValueError("image and mask must be torch.Tensor types.")
+        if image.ndim != 4 or mask.ndim not in [3, 4]:
+            raise ValueError("image must be a 4D tensor, and mask must be a 3D or 4D tensor.")
+
+        # Adjust mask dimensions if necessary
+        if mask.ndim == 3:
+            # [B, H, W] => [B, H, W, C=1]
+            mask = mask.unsqueeze(-1)
+
+        # Apply the mask to the image to turn specified regions grey.
+        image = image * mask + (1 - mask) * 0.5
+
+        return (image,)
+
 
 NODE_CLASS_MAPPINGS = {
     "ICLightModelLoader": ICLightModelLoader,
     "ApplyICLight": ApplyICLight,
     "LightSource": LightSource,
-    "CalculateNormalMap": CalculateNormalMap
+    "CalculateNormalMap": CalculateNormalMap,
+    "GrayScaler": GrayScaler
 }
 NODE_DISPLAY_NAME_MAPPINGS = {
     "ICLightModelLoader": "Load ICLight Model",
     "ApplyICLight": "Apply ICLight",
     "LightSource": "Simple Light Source",
-    "CalculateNormalMap": "Calculate Normal Map"
+    "CalculateNormalMap": "Calculate Normal Map",
+    "GrayScaler": "Gray Scaler",
 }

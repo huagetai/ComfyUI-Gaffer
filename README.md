@@ -131,6 +131,20 @@ comfyui's gaffer
   
   **tips**:The node from [kijai-ComfyUI-IC-Light](https://github.com/kijai/ComfyUI-IC-Light) project
 
+* **Gray Scaler Node**
+
+  Scales the image area to gray according to the provided mask.
+
+  ![Gray Scaler Node](image/node_gray-scaler.png)
+* 
+  input:
+  * image: transparent background image.
+  * mask:  mask indicating areas to be converted to grey.
+  
+  output:
+  * image: gray background image.
+  
+
 ## Credits
 
 * [IC-Light](https://github.com/lllyasviel/IC-Light)

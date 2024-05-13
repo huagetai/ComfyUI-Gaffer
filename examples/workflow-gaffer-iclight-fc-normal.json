@@ -1,6 +1,6 @@
 {
-  "last_node_id": 90,
-  "last_link_id": 217,
+  "last_node_id": 91,
+  "last_link_id": 222,
   "nodes": [
     {
       "id": 49,
@@ -96,7 +96,7 @@
         "1": 46
       },
       "flags": {},
-      "order": 20,
+      "order": 21,
       "mode": 0,
       "inputs": [
         {
@@ -361,59 +361,6 @@
       ]
     },
     {
-      "id": 66,
-      "type": "EmptyImage",
-      "pos": [
-        -483.05233047540605,
-        1238.4874113477158
-      ],
-      "size": {
-        "0": 315,
-        "1": 130
-      },
-      "flags": {},
-      "order": 16,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "width",
-          "type": "INT",
-          "link": 159,
-          "widget": {
-            "name": "width"
-          }
-        },
-        {
-          "name": "height",
-          "type": "INT",
-          "link": 160,
-          "widget": {
-            "name": "height"
-          }
-        }
-      ],
-      "outputs": [
-        {
-          "name": "IMAGE",
-          "type": "IMAGE",
-          "links": [
-            161
-          ],
-          "shape": 3,
-          "slot_index": 0
-        }
-      ],
-      "properties": {
-        "Node name for S&R": "EmptyImage"
-      },
-      "widgets_values": [
-        512,
-        512,
-        1,
-        8355711
-      ]
-    },
-    {
       "id": 42,
       "type": "LightSource",
       "pos": [
@@ -504,8 +451,7 @@
           "name": "IMAGE",
           "type": "IMAGE",
           "links": [
-            158,
-            162
+            158
           ],
           "shape": 3,
           "slot_index": 0
@@ -517,8 +463,7 @@
             79,
             86,
             87,
-            89,
-            159
+            89
           ],
           "shape": 3,
           "slot_index": 1
@@ -530,8 +475,7 @@
             78,
             85,
             88,
-            90,
-            160
+            90
           ],
           "shape": 3,
           "slot_index": 2
@@ -589,150 +533,6 @@
       ]
     },
     {
-      "id": 64,
-      "type": "ImageRemoveBackground+",
-      "pos": [
-        -83.05233047540592,
-        898.4874113477166
-      ],
-      "size": {
-        "0": 241.79998779296875,
-        "1": 46
-      },
-      "flags": {},
-      "order": 11,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "rembg_session",
-          "type": "REMBG_SESSION",
-          "link": 157,
-          "slot_index": 0
-        },
-        {
-          "name": "image",
-          "type": "IMAGE",
-          "link": 158
-        }
-      ],
-      "outputs": [
-        {
-          "name": "IMAGE",
-          "type": "IMAGE",
-          "links": [],
-          "shape": 3,
-          "slot_index": 0
-        },
-        {
-          "name": "MASK",
-          "type": "MASK",
-          "links": [
-            163
-          ],
-          "shape": 3,
-          "slot_index": 1
-        }
-      ],
-      "properties": {
-        "Node name for S&R": "ImageRemoveBackground+"
-      }
-    },
-    {
-      "id": 62,
-      "type": "ApplyICLight",
-      "pos": [
-        831.8661228220033,
-        989.5944853880765
-      ],
-      "size": {
-        "0": 315,
-        "1": 178
-      },
-      "flags": {},
-      "order": 22,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "model",
-          "type": "MODEL",
-          "link": 214
-        },
-        {
-          "name": "vae",
-          "type": "VAE",
-          "link": 206
-        },
-        {
-          "name": "iclight",
-          "type": "ICLIGHT",
-          "link": 150
-        },
-        {
-          "name": "positive",
-          "type": "CONDITIONING",
-          "link": 148
-        },
-        {
-          "name": "negative",
-          "type": "CONDITIONING",
-          "link": 147
-        },
-        {
-          "name": "fg_pixels",
-          "type": "IMAGE",
-          "link": 165
-        },
-        {
-          "name": "bg_pixels",
-          "type": "IMAGE",
-          "link": null
-        }
-      ],
-      "outputs": [
-        {
-          "name": "model",
-          "type": "MODEL",
-          "links": [
-            151
-          ],
-          "shape": 3,
-          "slot_index": 0
-        },
-        {
-          "name": "positive",
-          "type": "CONDITIONING",
-          "links": [
-            152
-          ],
-          "shape": 3,
-          "slot_index": 1
-        },
-        {
-          "name": "negative",
-          "type": "CONDITIONING",
-          "links": [
-            153
-          ],
-          "shape": 3,
-          "slot_index": 2
-        },
-        {
-          "name": "empty_latent",
-          "type": "LATENT",
-          "links": null,
-          "shape": 3
-        }
-      ],
-      "properties": {
-        "Node name for S&R": "ApplyICLight"
-      },
-      "widgets_values": [
-        1
-      ],
-      "color": "#432",
-      "bgcolor": "#653"
-    },
-    {
       "id": 36,
       "type": "VAEDecode",
       "pos": [
@@ -744,7 +544,7 @@
         "1": 46
       },
       "flags": {},
-      "order": 26,
+      "order": 25,
       "mode": 0,
       "inputs": [
         {
@@ -787,85 +587,13 @@
         "1": 581.5648803710938
       },
       "flags": {},
-      "order": 27,
+      "order": 26,
       "mode": 0,
       "inputs": [
         {
           "name": "images",
           "type": "IMAGE",
           "link": 63
-        }
-      ],
-      "properties": {
-        "Node name for S&R": "PreviewImage"
-      }
-    },
-    {
-      "id": 63,
-      "type": "CalculateNormalMap",
-      "pos": [
-        1691.866122821997,
-        1739.594485388076
-      ],
-      "size": {
-        "0": 315,
-        "1": 102
-      },
-      "flags": {},
-      "order": 28,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "images",
-          "type": "IMAGE",
-          "link": 155
-        },
-        {
-          "name": "mask",
-          "type": "MASK",
-          "link": null
-        }
-      ],
-      "outputs": [
-        {
-          "name": "normal",
-          "type": "IMAGE",
-          "links": [
-            156
-          ],
-          "shape": 3,
-          "slot_index": 0
-        }
-      ],
-      "properties": {
-        "Node name for S&R": "CalculateNormalMap"
-      },
-      "widgets_values": [
-        10,
-        false
-      ],
-      "color": "#432",
-      "bgcolor": "#653"
-    },
-    {
-      "id": 45,
-      "type": "PreviewImage",
-      "pos": [
-        2071.8661228219935,
-        1739.594485388076
-      ],
-      "size": {
-        "0": 403.2276611328125,
-        "1": 577.4949951171875
-      },
-      "flags": {},
-      "order": 29,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "images",
-          "type": "IMAGE",
-          "link": 156
         }
       ],
       "properties": {
@@ -935,7 +663,7 @@
         "1": 339.7276611328125
       },
       "flags": {},
-      "order": 23,
+      "order": 22,
       "mode": 0,
       "inputs": [
         {
@@ -949,58 +677,6 @@
       }
     },
     {
-      "id": 67,
-      "type": "ImageCompositeMasked",
-      "pos": [
-        -83,
-        993
-      ],
-      "size": {
-        "0": 315,
-        "1": 146
-      },
-      "flags": {},
-      "order": 19,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "destination",
-          "type": "IMAGE",
-          "link": 161
-        },
-        {
-          "name": "source",
-          "type": "IMAGE",
-          "link": 162
-        },
-        {
-          "name": "mask",
-          "type": "MASK",
-          "link": 163
-        }
-      ],
-      "outputs": [
-        {
-          "name": "IMAGE",
-          "type": "IMAGE",
-          "links": [
-            164,
-            165
-          ],
-          "shape": 3,
-          "slot_index": 0
-        }
-      ],
-      "properties": {
-        "Node name for S&R": "ImageCompositeMasked"
-      },
-      "widgets_values": [
-        0,
-        0,
-        false
-      ]
-    },
-    {
       "id": 68,
       "type": "PreviewImage",
       "pos": [
@@ -1012,13 +688,13 @@
         "1": 246
       },
       "flags": {},
-      "order": 21,
+      "order": 19,
       "mode": 0,
       "inputs": [
         {
           "name": "images",
           "type": "IMAGE",
-          "link": 164
+          "link": 221
         }
       ],
       "properties": {
@@ -1142,7 +818,7 @@
         "1": 474
       },
       "flags": {},
-      "order": 25,
+      "order": 24,
       "mode": 0,
       "inputs": [
         {
@@ -1351,7 +1027,7 @@
         "1": 46.57838821411133
       },
       "flags": {},
-      "order": 24,
+      "order": 23,
       "mode": 0,
       "inputs": [
         {
@@ -1380,6 +1056,270 @@
       ],
       "properties": {
         "Node name for S&R": "VAEEncode"
+      }
+    },
+    {
+      "id": 91,
+      "type": "GrayScaler",
+      "pos": [
+        10,
+        1050
+      ],
+      "size": {
+        "0": 210,
+        "1": 46
+      },
+      "flags": {
+        "pinned": true
+      },
+      "order": 16,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 219
+        },
+        {
+          "name": "mask",
+          "type": "MASK",
+          "link": 220
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            221,
+            222
+          ],
+          "shape": 3,
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "GrayScaler"
+      },
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 64,
+      "type": "ImageRemoveBackground+",
+      "pos": [
+        -83,
+        898
+      ],
+      "size": {
+        "0": 241.79998779296875,
+        "1": 46
+      },
+      "flags": {},
+      "order": 11,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "rembg_session",
+          "type": "REMBG_SESSION",
+          "link": 157,
+          "slot_index": 0
+        },
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 158
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            219
+          ],
+          "shape": 3,
+          "slot_index": 0
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": [
+            220
+          ],
+          "shape": 3,
+          "slot_index": 1
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "ImageRemoveBackground+"
+      }
+    },
+    {
+      "id": 62,
+      "type": "ApplyICLight",
+      "pos": [
+        831.8661228220033,
+        989.5944853880765
+      ],
+      "size": {
+        "0": 315,
+        "1": 178
+      },
+      "flags": {},
+      "order": 20,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 214
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 206
+        },
+        {
+          "name": "iclight",
+          "type": "ICLIGHT",
+          "link": 150
+        },
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 148
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "link": 147
+        },
+        {
+          "name": "fg_pixels",
+          "type": "IMAGE",
+          "link": 222
+        },
+        {
+          "name": "bg_pixels",
+          "type": "IMAGE",
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "links": [
+            151
+          ],
+          "shape": 3,
+          "slot_index": 0
+        },
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "links": [
+            152
+          ],
+          "shape": 3,
+          "slot_index": 1
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "links": [
+            153
+          ],
+          "shape": 3,
+          "slot_index": 2
+        },
+        {
+          "name": "empty_latent",
+          "type": "LATENT",
+          "links": null,
+          "shape": 3
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "ApplyICLight"
+      },
+      "widgets_values": [
+        1.2
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 63,
+      "type": "CalculateNormalMap",
+      "pos": [
+        1635,
+        1675
+      ],
+      "size": {
+        "0": 315,
+        "1": 102
+      },
+      "flags": {},
+      "order": 27,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 155
+        },
+        {
+          "name": "mask",
+          "type": "MASK",
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "name": "normal",
+          "type": "IMAGE",
+          "links": [
+            156
+          ],
+          "shape": 3,
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CalculateNormalMap"
+      },
+      "widgets_values": [
+        10,
+        false
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 45,
+      "type": "PreviewImage",
+      "pos": [
+        2064,
+        1674
+      ],
+      "size": {
+        "0": 403.2276611328125,
+        "1": 577.4949951171875
+      },
+      "flags": {},
+      "order": 28,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 156
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "PreviewImage"
       }
     }
   ],
@@ -1673,62 +1613,6 @@
       "IMAGE"
     ],
     [
-      159,
-      28,
-      1,
-      66,
-      0,
-      "INT"
-    ],
-    [
-      160,
-      28,
-      2,
-      66,
-      1,
-      "INT"
-    ],
-    [
-      161,
-      66,
-      0,
-      67,
-      0,
-      "IMAGE"
-    ],
-    [
-      162,
-      28,
-      0,
-      67,
-      1,
-      "IMAGE"
-    ],
-    [
-      163,
-      64,
-      1,
-      67,
-      2,
-      "MASK"
-    ],
-    [
-      164,
-      67,
-      0,
-      68,
-      0,
-      "IMAGE"
-    ],
-    [
-      165,
-      67,
-      0,
-      62,
-      5,
-      "IMAGE"
-    ],
-    [
       205,
       6,
       2,
@@ -1783,6 +1667,38 @@
       62,
       0,
       "MODEL"
+    ],
+    [
+      219,
+      64,
+      0,
+      91,
+      0,
+      "IMAGE"
+    ],
+    [
+      220,
+      64,
+      1,
+      91,
+      1,
+      "MASK"
+    ],
+    [
+      221,
+      91,
+      0,
+      68,
+      0,
+      "IMAGE"
+    ],
+    [
+      222,
+      91,
+      0,
+      62,
+      5,
+      "IMAGE"
     ]
   ],
   "groups": [
@@ -1826,10 +1742,10 @@
   "config": {},
   "extra": {
     "ds": {
-      "scale": 0.385543289429532,
+      "scale": 0.35049389948139237,
       "offset": {
-        "0": 1761.6205311022047,
-        "1": 262.45123908624777
+        "0": 2220.7743800231146,
+        "1": 321.1031645390776
       }
     }
   },

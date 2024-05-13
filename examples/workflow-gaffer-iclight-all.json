@@ -1,6 +1,6 @@
 {
-  "last_node_id": 86,
-  "last_link_id": 216,
+  "last_node_id": 87,
+  "last_link_id": 223,
   "nodes": [
     {
       "id": 49,
@@ -75,48 +75,6 @@
           "type": "IMAGE",
           "links": [
             96
-          ],
-          "shape": 3,
-          "slot_index": 0
-        }
-      ],
-      "properties": {
-        "Node name for S&R": "ImageBatch"
-      }
-    },
-    {
-      "id": 51,
-      "type": "ImageBatch",
-      "pos": [
-        55.66072852326968,
-        1904.0930787287589
-      ],
-      "size": {
-        "0": 210,
-        "1": 46
-      },
-      "flags": {},
-      "order": 24,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "image1",
-          "type": "IMAGE",
-          "link": 95
-        },
-        {
-          "name": "image2",
-          "type": "IMAGE",
-          "link": 96
-        }
-      ],
-      "outputs": [
-        {
-          "name": "IMAGE",
-          "type": "IMAGE",
-          "links": [
-            97,
-            99
           ],
           "shape": 3,
           "slot_index": 0
@@ -361,59 +319,6 @@
       ]
     },
     {
-      "id": 66,
-      "type": "EmptyImage",
-      "pos": [
-        -483.05233047540605,
-        1238.4874113477158
-      ],
-      "size": {
-        "0": 315,
-        "1": 130
-      },
-      "flags": {},
-      "order": 17,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "width",
-          "type": "INT",
-          "link": 159,
-          "widget": {
-            "name": "width"
-          }
-        },
-        {
-          "name": "height",
-          "type": "INT",
-          "link": 160,
-          "widget": {
-            "name": "height"
-          }
-        }
-      ],
-      "outputs": [
-        {
-          "name": "IMAGE",
-          "type": "IMAGE",
-          "links": [
-            161
-          ],
-          "shape": 3,
-          "slot_index": 0
-        }
-      ],
-      "properties": {
-        "Node name for S&R": "EmptyImage"
-      },
-      "widgets_values": [
-        512,
-        512,
-        1,
-        8355711
-      ]
-    },
-    {
       "id": 42,
       "type": "LightSource",
       "pos": [
@@ -543,8 +448,7 @@
           "name": "IMAGE",
           "type": "IMAGE",
           "links": [
-            158,
-            162
+            158
           ],
           "shape": 3,
           "slot_index": 0
@@ -557,7 +461,6 @@
             86,
             87,
             89,
-            159,
             167
           ],
           "shape": 3,
@@ -571,7 +474,6 @@
             85,
             88,
             90,
-            160,
             168
           ],
           "shape": 3,
@@ -586,81 +488,6 @@
         0,
         "nearest",
         true,
-        "always",
-        8
-      ]
-    },
-    {
-      "id": 70,
-      "type": "ImageResize+",
-      "pos": [
-        -552.5682843054999,
-        2785.7466924653672
-      ],
-      "size": {
-        "0": 315,
-        "1": 218
-      },
-      "flags": {},
-      "order": 18,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "image",
-          "type": "IMAGE",
-          "link": 166
-        },
-        {
-          "name": "width",
-          "type": "INT",
-          "link": 167,
-          "widget": {
-            "name": "width"
-          }
-        },
-        {
-          "name": "height",
-          "type": "INT",
-          "link": 168,
-          "widget": {
-            "name": "height"
-          }
-        }
-      ],
-      "outputs": [
-        {
-          "name": "IMAGE",
-          "type": "IMAGE",
-          "links": [
-            169,
-            181
-          ],
-          "shape": 3,
-          "slot_index": 0
-        },
-        {
-          "name": "width",
-          "type": "INT",
-          "links": [],
-          "shape": 3,
-          "slot_index": 1
-        },
-        {
-          "name": "height",
-          "type": "INT",
-          "links": [],
-          "shape": 3,
-          "slot_index": 2
-        }
-      ],
-      "properties": {
-        "Node name for S&R": "ImageResize+"
-      },
-      "widgets_values": [
-        512,
-        0,
-        "nearest",
-        false,
         "always",
         8
       ]
@@ -777,55 +604,6 @@
       ]
     },
     {
-      "id": 64,
-      "type": "ImageRemoveBackground+",
-      "pos": [
-        -83.05233047540592,
-        898.4874113477166
-      ],
-      "size": {
-        "0": 241.79998779296875,
-        "1": 46
-      },
-      "flags": {},
-      "order": 12,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "rembg_session",
-          "type": "REMBG_SESSION",
-          "link": 157,
-          "slot_index": 0
-        },
-        {
-          "name": "image",
-          "type": "IMAGE",
-          "link": 158
-        }
-      ],
-      "outputs": [
-        {
-          "name": "IMAGE",
-          "type": "IMAGE",
-          "links": [],
-          "shape": 3,
-          "slot_index": 0
-        },
-        {
-          "name": "MASK",
-          "type": "MASK",
-          "links": [
-            163
-          ],
-          "shape": 3,
-          "slot_index": 1
-        }
-      ],
-      "properties": {
-        "Node name for S&R": "ImageRemoveBackground+"
-      }
-    },
-    {
       "id": 62,
       "type": "ApplyICLight",
       "pos": [
@@ -837,7 +615,7 @@
         "1": 178
       },
       "flags": {},
-      "order": 26,
+      "order": 23,
       "mode": 0,
       "inputs": [
         {
@@ -868,7 +646,7 @@
         {
           "name": "fg_pixels",
           "type": "IMAGE",
-          "link": 165
+          "link": 221
         },
         {
           "name": "bg_pixels",
@@ -932,7 +710,7 @@
         26
       ],
       "flags": {},
-      "order": 19,
+      "order": 18,
       "mode": 0,
       "inputs": [
         {
@@ -969,7 +747,7 @@
         "1": 46
       },
       "flags": {},
-      "order": 33,
+      "order": 32,
       "mode": 0,
       "inputs": [
         {
@@ -1012,7 +790,7 @@
         "1": 474
       },
       "flags": {},
-      "order": 31,
+      "order": 30,
       "mode": 0,
       "inputs": [
         {
@@ -1072,7 +850,7 @@
         "1": 581.5648803710938
       },
       "flags": {},
-      "order": 35,
+      "order": 33,
       "mode": 0,
       "inputs": [
         {
@@ -1097,7 +875,7 @@
         "1": 102
       },
       "flags": {},
-      "order": 36,
+      "order": 34,
       "mode": 0,
       "inputs": [
         {
@@ -1144,7 +922,7 @@
         "1": 577.4949951171875
       },
       "flags": {},
-      "order": 37,
+      "order": 35,
       "mode": 0,
       "inputs": [
         {
@@ -1296,7 +1074,7 @@
         "1": 474
       },
       "flags": {},
-      "order": 30,
+      "order": 26,
       "mode": 0,
       "inputs": [
         {
@@ -1356,7 +1134,7 @@
         "1": 46
       },
       "flags": {},
-      "order": 32,
+      "order": 29,
       "mode": 0,
       "inputs": [
         {
@@ -1398,7 +1176,7 @@
         "1": 180
       },
       "flags": {},
-      "order": 27,
+      "order": 24,
       "mode": 0,
       "inputs": [
         {
@@ -1429,7 +1207,7 @@
         {
           "name": "fg_pixels",
           "type": "IMAGE",
-          "link": 204
+          "link": 223
         },
         {
           "name": "bg_pixels",
@@ -1485,31 +1263,6 @@
       "bgcolor": "#653"
     },
     {
-      "id": 71,
-      "type": "PreviewImage",
-      "pos": [
-        -126,
-        2895.81723149187
-      ],
-      "size": {
-        "0": 210,
-        "1": 246
-      },
-      "flags": {},
-      "order": 23,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "images",
-          "type": "IMAGE",
-          "link": 169
-        }
-      ],
-      "properties": {
-        "Node name for S&R": "PreviewImage"
-      }
-    },
-    {
       "id": 79,
       "type": "PreviewImage",
       "pos": [
@@ -1521,7 +1274,7 @@
         "1": 489.39794921875
       },
       "flags": {},
-      "order": 34,
+      "order": 31,
       "mode": 0,
       "inputs": [
         {
@@ -1546,91 +1299,13 @@
         "1": 339.7276611328125
       },
       "flags": {},
-      "order": 28,
+      "order": 27,
       "mode": 0,
       "inputs": [
         {
           "name": "images",
           "type": "IMAGE",
           "link": 97
-        }
-      ],
-      "properties": {
-        "Node name for S&R": "PreviewImage"
-      }
-    },
-    {
-      "id": 67,
-      "type": "ImageCompositeMasked",
-      "pos": [
-        -83,
-        993
-      ],
-      "size": {
-        "0": 315,
-        "1": 146
-      },
-      "flags": {},
-      "order": 22,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "destination",
-          "type": "IMAGE",
-          "link": 161
-        },
-        {
-          "name": "source",
-          "type": "IMAGE",
-          "link": 162
-        },
-        {
-          "name": "mask",
-          "type": "MASK",
-          "link": 163
-        }
-      ],
-      "outputs": [
-        {
-          "name": "IMAGE",
-          "type": "IMAGE",
-          "links": [
-            164,
-            165,
-            204
-          ],
-          "shape": 3,
-          "slot_index": 0
-        }
-      ],
-      "properties": {
-        "Node name for S&R": "ImageCompositeMasked"
-      },
-      "widgets_values": [
-        0,
-        0,
-        false
-      ]
-    },
-    {
-      "id": 68,
-      "type": "PreviewImage",
-      "pos": [
-        13,
-        1187
-      ],
-      "size": {
-        "0": 210,
-        "1": 246
-      },
-      "flags": {},
-      "order": 25,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "images",
-          "type": "IMAGE",
-          "link": 164
         }
       ],
       "properties": {
@@ -1757,7 +1432,7 @@
         "1": 46.57838821411133
       },
       "flags": {},
-      "order": 29,
+      "order": 28,
       "mode": 0,
       "inputs": [
         {
@@ -1786,6 +1461,241 @@
       ],
       "properties": {
         "Node name for S&R": "VAEEncode"
+      }
+    },
+    {
+      "id": 64,
+      "type": "ImageRemoveBackground+",
+      "pos": [
+        -83,
+        898
+      ],
+      "size": {
+        "0": 241.79998779296875,
+        "1": 46
+      },
+      "flags": {},
+      "order": 12,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "rembg_session",
+          "type": "REMBG_SESSION",
+          "link": 157,
+          "slot_index": 0
+        },
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 158
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            218
+          ],
+          "shape": 3,
+          "slot_index": 0
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": [
+            219
+          ],
+          "shape": 3,
+          "slot_index": 1
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "ImageRemoveBackground+"
+      }
+    },
+    {
+      "id": 68,
+      "type": "PreviewImage",
+      "pos": [
+        26,
+        1153
+      ],
+      "size": {
+        "0": 210,
+        "1": 246
+      },
+      "flags": {},
+      "order": 22,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 220
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "PreviewImage"
+      }
+    },
+    {
+      "id": 70,
+      "type": "ImageResize+",
+      "pos": [
+        -552,
+        2788
+      ],
+      "size": {
+        "0": 315,
+        "1": 218
+      },
+      "flags": {},
+      "order": 17,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 166
+        },
+        {
+          "name": "width",
+          "type": "INT",
+          "link": 167,
+          "widget": {
+            "name": "width"
+          }
+        },
+        {
+          "name": "height",
+          "type": "INT",
+          "link": 168,
+          "widget": {
+            "name": "height"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            181
+          ],
+          "shape": 3,
+          "slot_index": 0
+        },
+        {
+          "name": "width",
+          "type": "INT",
+          "links": [],
+          "shape": 3,
+          "slot_index": 1
+        },
+        {
+          "name": "height",
+          "type": "INT",
+          "links": [],
+          "shape": 3,
+          "slot_index": 2
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "ImageResize+"
+      },
+      "widgets_values": [
+        512,
+        0,
+        "nearest",
+        false,
+        "always",
+        8
+      ]
+    },
+    {
+      "id": 51,
+      "type": "ImageBatch",
+      "pos": [
+        55.66072852326968,
+        1904.0930787287589
+      ],
+      "size": {
+        "0": 210,
+        "1": 46
+      },
+      "flags": {},
+      "order": 25,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image1",
+          "type": "IMAGE",
+          "link": 95
+        },
+        {
+          "name": "image2",
+          "type": "IMAGE",
+          "link": 96
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            97,
+            99
+          ],
+          "shape": 3,
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "ImageBatch"
+      }
+    },
+    {
+      "id": 87,
+      "type": "GrayScaler",
+      "pos": [
+        26.622604713618784,
+        1027.751508657359
+      ],
+      "size": {
+        "0": 210,
+        "1": 46
+      },
+      "flags": {},
+      "order": 19,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 218
+        },
+        {
+          "name": "mask",
+          "type": "MASK",
+          "link": 219
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            220,
+            221,
+            223
+          ],
+          "shape": 3,
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "GrayScaler"
       }
     }
   ],
@@ -2079,62 +1989,6 @@
       "IMAGE"
     ],
     [
-      159,
-      28,
-      1,
-      66,
-      0,
-      "INT"
-    ],
-    [
-      160,
-      28,
-      2,
-      66,
-      1,
-      "INT"
-    ],
-    [
-      161,
-      66,
-      0,
-      67,
-      0,
-      "IMAGE"
-    ],
-    [
-      162,
-      28,
-      0,
-      67,
-      1,
-      "IMAGE"
-    ],
-    [
-      163,
-      64,
-      1,
-      67,
-      2,
-      "MASK"
-    ],
-    [
-      164,
-      67,
-      0,
-      68,
-      0,
-      "IMAGE"
-    ],
-    [
-      165,
-      67,
-      0,
-      62,
-      5,
-      "IMAGE"
-    ],
-    [
       166,
       69,
       0,
@@ -2157,14 +2011,6 @@
       70,
       2,
       "INT"
-    ],
-    [
-      169,
-      70,
-      0,
-      71,
-      0,
-      "IMAGE"
     ],
     [
       173,
@@ -2236,14 +2082,6 @@
       0,
       79,
       0,
-      "IMAGE"
-    ],
-    [
-      204,
-      67,
-      0,
-      75,
-      5,
       "IMAGE"
     ],
     [
@@ -2333,6 +2171,46 @@
       77,
       3,
       "LATENT"
+    ],
+    [
+      218,
+      64,
+      0,
+      87,
+      0,
+      "IMAGE"
+    ],
+    [
+      219,
+      64,
+      1,
+      87,
+      1,
+      "MASK"
+    ],
+    [
+      220,
+      87,
+      0,
+      68,
+      0,
+      "IMAGE"
+    ],
+    [
+      221,
+      87,
+      0,
+      62,
+      5,
+      "IMAGE"
+    ],
+    [
+      223,
+      87,
+      0,
+      75,
+      5,
+      "IMAGE"
     ]
   ],
   "groups": [
@@ -2400,10 +2278,10 @@
   "config": {},
   "extra": {
     "ds": {
-      "scale": 0.3855432894295333,
+      "scale": 0.3504938994813927,
       "offset": {
-        "0": 2110.4955805851732,
-        "1": -71.88922144126275
+        "0": 2414.1013859142877,
+        "1": -121.76160245431333
       }
     }
   },

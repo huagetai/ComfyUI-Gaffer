@@ -1,6 +1,6 @@
 {
-  "last_node_id": 87,
-  "last_link_id": 227,
+  "last_node_id": 88,
+  "last_link_id": 231,
   "nodes": [
     {
       "id": 28,
@@ -28,8 +28,7 @@
           "name": "IMAGE",
           "type": "IMAGE",
           "links": [
-            158,
-            162
+            158
           ],
           "shape": 3,
           "slot_index": 0
@@ -38,8 +37,7 @@
           "name": "width",
           "type": "INT",
           "links": [
-            79,
-            159
+            79
           ],
           "shape": 3,
           "slot_index": 1
@@ -48,8 +46,7 @@
           "name": "height",
           "type": "INT",
           "links": [
-            78,
-            160
+            78
           ],
           "shape": 3,
           "slot_index": 2
@@ -68,31 +65,6 @@
       ]
     },
     {
-      "id": 68,
-      "type": "PreviewImage",
-      "pos": [
-        218.49848027265622,
-        1221.1887652515625
-      ],
-      "size": {
-        "0": 210,
-        "1": 246
-      },
-      "flags": {},
-      "order": 13,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "images",
-          "type": "IMAGE",
-          "link": 164
-        }
-      ],
-      "properties": {
-        "Node name for S&R": "PreviewImage"
-      }
-    },
-    {
       "id": 36,
       "type": "VAEDecode",
       "pos": [
@@ -104,7 +76,7 @@
         "1": 46
       },
       "flags": {},
-      "order": 16,
+      "order": 15,
       "mode": 0,
       "inputs": [
         {
@@ -132,192 +104,6 @@
       ],
       "properties": {
         "Node name for S&R": "VAEDecode"
-      }
-    },
-    {
-      "id": 65,
-      "type": "RemBGSession+",
-      "pos": [
-        -601.5015197273425,
-        1261.1887652515625
-      ],
-      "size": {
-        "0": 315,
-        "1": 82
-      },
-      "flags": {},
-      "order": 0,
-      "mode": 0,
-      "outputs": [
-        {
-          "name": "REMBG_SESSION",
-          "type": "REMBG_SESSION",
-          "links": [
-            157
-          ],
-          "shape": 3
-        }
-      ],
-      "properties": {
-        "Node name for S&R": "RemBGSession+"
-      },
-      "widgets_values": [
-        "isnet-general-use: general purpose",
-        "CPU"
-      ]
-    },
-    {
-      "id": 66,
-      "type": "EmptyImage",
-      "pos": [
-        128.49848027265617,
-        831.1887652515626
-      ],
-      "size": {
-        "0": 315,
-        "1": 130
-      },
-      "flags": {},
-      "order": 10,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "width",
-          "type": "INT",
-          "link": 159,
-          "widget": {
-            "name": "width"
-          }
-        },
-        {
-          "name": "height",
-          "type": "INT",
-          "link": 160,
-          "widget": {
-            "name": "height"
-          }
-        }
-      ],
-      "outputs": [
-        {
-          "name": "IMAGE",
-          "type": "IMAGE",
-          "links": [
-            161
-          ],
-          "shape": 3,
-          "slot_index": 0
-        }
-      ],
-      "properties": {
-        "Node name for S&R": "EmptyImage"
-      },
-      "widgets_values": [
-        512,
-        512,
-        1,
-        8355711
-      ]
-    },
-    {
-      "id": 67,
-      "type": "ImageCompositeMasked",
-      "pos": [
-        128.49848027265617,
-        1011.1887652515626
-      ],
-      "size": {
-        "0": 315,
-        "1": 146
-      },
-      "flags": {},
-      "order": 12,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "destination",
-          "type": "IMAGE",
-          "link": 161
-        },
-        {
-          "name": "source",
-          "type": "IMAGE",
-          "link": 162
-        },
-        {
-          "name": "mask",
-          "type": "MASK",
-          "link": 163
-        }
-      ],
-      "outputs": [
-        {
-          "name": "IMAGE",
-          "type": "IMAGE",
-          "links": [
-            164,
-            165
-          ],
-          "shape": 3,
-          "slot_index": 0
-        }
-      ],
-      "properties": {
-        "Node name for S&R": "ImageCompositeMasked"
-      },
-      "widgets_values": [
-        0,
-        0,
-        false
-      ]
-    },
-    {
-      "id": 64,
-      "type": "ImageRemoveBackground+",
-      "pos": [
-        -211.50151972734392,
-        1271.1887652515625
-      ],
-      "size": {
-        "0": 241.79998779296875,
-        "1": 46
-      },
-      "flags": {},
-      "order": 8,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "rembg_session",
-          "type": "REMBG_SESSION",
-          "link": 157,
-          "slot_index": 0
-        },
-        {
-          "name": "image",
-          "type": "IMAGE",
-          "link": 158
-        }
-      ],
-      "outputs": [
-        {
-          "name": "IMAGE",
-          "type": "IMAGE",
-          "links": [],
-          "shape": 3,
-          "slot_index": 0
-        },
-        {
-          "name": "MASK",
-          "type": "MASK",
-          "links": [
-            163
-          ],
-          "shape": 3,
-          "slot_index": 1
-        }
-      ],
-      "properties": {
-        "Node name for S&R": "ImageRemoveBackground+"
       }
     },
     {
@@ -410,7 +196,7 @@
         "1": 98
       },
       "flags": {},
-      "order": 1,
+      "order": 0,
       "mode": 0,
       "outputs": [
         {
@@ -463,7 +249,7 @@
         "1": 58
       },
       "flags": {},
-      "order": 2,
+      "order": 1,
       "mode": 0,
       "outputs": [
         {
@@ -497,7 +283,7 @@
         "1": 581.5648803710938
       },
       "flags": {},
-      "order": 17,
+      "order": 16,
       "mode": 0,
       "inputs": [
         {
@@ -565,7 +351,7 @@
         "1": 474
       },
       "flags": {},
-      "order": 15,
+      "order": 14,
       "mode": 0,
       "inputs": [
         {
@@ -625,7 +411,7 @@
         "1": 178
       },
       "flags": {},
-      "order": 14,
+      "order": 13,
       "mode": 0,
       "inputs": [
         {
@@ -656,7 +442,7 @@
         {
           "name": "fg_pixels",
           "type": "IMAGE",
-          "link": 165
+          "link": 231
         },
         {
           "name": "bg_pixels",
@@ -709,6 +495,218 @@
       "bgcolor": "#653"
     },
     {
+      "id": 87,
+      "type": "Note",
+      "pos": [
+        -758,
+        78
+      ],
+      "size": {
+        "0": 884.5147094726562,
+        "1": 616.7295532226562
+      },
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "properties": {
+        "text": ""
+      },
+      "widgets_values": [
+        "beautiful woman, detailed face, sunshine, outdoor, warm atmosphere\n\nbeautiful woman, detailed face, neon, Wong Kar-wai, warm\n\nbeautiful woman, detailed face, sunshine from window\n\nbeautiful woman, detailed face, warm atmosphere, at home, bedroom\n\nbeautiful woman, detailed face, shadow from window\n\nbeautiful woman, detailed face, sunset over sea\n\nbeautiful woman, detailed face, light and shadow\n\nhandsome boy, detailed face, neon light, city\n\nBuddha, detailed face, sci-fi RGB glowing, cyberpunk\n\nBuddha, detailed face, natural lighting\n\ntoy, detailed face, shadow from window\n\ntoy, detailed face, sunset over sea\n\ndog, magic lit, sci-fi RGB glowing, studio lighting\n\nmysteriou human, warm atmosphere, warm atmosphere, at home, bedroom\n\n"
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 9,
+      "type": "LoadImage",
+      "pos": [
+        -694.7181390945309,
+        851.10255243125
+      ],
+      "size": {
+        "0": 315,
+        "1": 314.0000305175781
+      },
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            123
+          ],
+          "shape": 3,
+          "slot_index": 0
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": null,
+          "shape": 3
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LoadImage"
+      },
+      "widgets_values": [
+        "i3 (6).png",
+        "image"
+      ]
+    },
+    {
+      "id": 64,
+      "type": "ImageRemoveBackground+",
+      "pos": [
+        194,
+        915
+      ],
+      "size": {
+        "0": 241.79998779296875,
+        "1": 46
+      },
+      "flags": {},
+      "order": 8,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "rembg_session",
+          "type": "REMBG_SESSION",
+          "link": 157,
+          "slot_index": 0
+        },
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 158
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            228
+          ],
+          "shape": 3,
+          "slot_index": 0
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": [
+            229
+          ],
+          "shape": 3,
+          "slot_index": 1
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "ImageRemoveBackground+"
+      }
+    },
+    {
+      "id": 68,
+      "type": "PreviewImage",
+      "pos": [
+        232,
+        1146
+      ],
+      "size": {
+        "0": 210,
+        "1": 246
+      },
+      "flags": {},
+      "order": 12,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 230
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "PreviewImage"
+      }
+    },
+    {
+      "id": 88,
+      "type": "GrayScaler",
+      "pos": [
+        216,
+        1016
+      ],
+      "size": {
+        "0": 210,
+        "1": 46
+      },
+      "flags": {},
+      "order": 10,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 228
+        },
+        {
+          "name": "mask",
+          "type": "MASK",
+          "link": 229
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            230,
+            231
+          ],
+          "shape": 3,
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "GrayScaler"
+      }
+    },
+    {
+      "id": 65,
+      "type": "RemBGSession+",
+      "pos": [
+        -266,
+        834
+      ],
+      "size": {
+        "0": 315,
+        "1": 82
+      },
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "outputs": [
+        {
+          "name": "REMBG_SESSION",
+          "type": "REMBG_SESSION",
+          "links": [
+            157
+          ],
+          "shape": 3
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "RemBGSession+"
+      },
+      "widgets_values": [
+        "u2net_human_seg: human segmentation",
+        "CPU"
+      ]
+    },
+    {
       "id": 42,
       "type": "LightSource",
       "pos": [
@@ -756,74 +754,12 @@
         "Node name for S&R": "LightSource"
       },
       "widgets_values": [
-        "Top Light",
+        "Top Left Light",
         1,
         "#ffffff",
         "#000000",
         512,
         512
-      ],
-      "color": "#432",
-      "bgcolor": "#653"
-    },
-    {
-      "id": 9,
-      "type": "LoadImage",
-      "pos": [
-        -694.7181390945309,
-        851.10255243125
-      ],
-      "size": {
-        "0": 315,
-        "1": 314.0000305175781
-      },
-      "flags": {},
-      "order": 3,
-      "mode": 0,
-      "outputs": [
-        {
-          "name": "IMAGE",
-          "type": "IMAGE",
-          "links": [
-            123
-          ],
-          "shape": 3,
-          "slot_index": 0
-        },
-        {
-          "name": "MASK",
-          "type": "MASK",
-          "links": null,
-          "shape": 3
-        }
-      ],
-      "properties": {
-        "Node name for S&R": "LoadImage"
-      },
-      "widgets_values": [
-        "9041719fd893b223a3c94ec6c7a49245.jpg",
-        "image"
-      ]
-    },
-    {
-      "id": 87,
-      "type": "Note",
-      "pos": [
-        -758,
-        78
-      ],
-      "size": {
-        "0": 884.5147094726562,
-        "1": 616.7295532226562
-      },
-      "flags": {},
-      "order": 4,
-      "mode": 0,
-      "properties": {
-        "text": ""
-      },
-      "widgets_values": [
-        "beautiful woman, detailed face, sunshine, outdoor, warm atmosphere\n\nbeautiful woman, detailed face, neon, Wong Kar-wai, warm\n\nbeautiful woman, detailed face, sunshine from window\n\nbeautiful woman, detailed face, warm atmosphere, at home, bedroom\n\nbeautiful woman, detailed face, shadow from window\n\nbeautiful woman, detailed face, sunset over sea\n\nbeautiful woman, detailed face, light and shadow\n\nhandsome boy, detailed face, neon light, city\n\nBuddha, detailed face, sci-fi RGB glowing, cyberpunk\n\nBuddha, detailed face, natural lighting\n\ntoy, detailed face, shadow from window\n\ntoy, detailed face, sunset over sea\n\ndog, magic lit, sci-fi RGB glowing, studio lighting\n\nmysteriou human, warm atmosphere, warm atmosphere, at home, bedroom\n\n"
       ],
       "color": "#432",
       "bgcolor": "#653"
@@ -959,62 +895,6 @@
       "IMAGE"
     ],
     [
-      159,
-      28,
-      1,
-      66,
-      0,
-      "INT"
-    ],
-    [
-      160,
-      28,
-      2,
-      66,
-      1,
-      "INT"
-    ],
-    [
-      161,
-      66,
-      0,
-      67,
-      0,
-      "IMAGE"
-    ],
-    [
-      162,
-      28,
-      0,
-      67,
-      1,
-      "IMAGE"
-    ],
-    [
-      163,
-      64,
-      1,
-      67,
-      2,
-      "MASK"
-    ],
-    [
-      164,
-      67,
-      0,
-      68,
-      0,
-      "IMAGE"
-    ],
-    [
-      165,
-      67,
-      0,
-      62,
-      5,
-      "IMAGE"
-    ],
-    [
       221,
       42,
       0,
@@ -1053,6 +933,38 @@
       62,
       0,
       "MODEL"
+    ],
+    [
+      228,
+      64,
+      0,
+      88,
+      0,
+      "IMAGE"
+    ],
+    [
+      229,
+      64,
+      1,
+      88,
+      1,
+      "MASK"
+    ],
+    [
+      230,
+      88,
+      0,
+      68,
+      0,
+      "IMAGE"
+    ],
+    [
+      231,
+      88,
+      0,
+      62,
+      5,
+      "IMAGE"
     ]
   ],
   "groups": [
@@ -1074,8 +986,8 @@
     "ds": {
       "scale": 0.5131581182307067,
       "offset": {
-        "0": 1564.634237793645,
-        "1": 85.58901597045116
+        "0": 1988.018452815201,
+        "1": 247.8858309778409
       }
     }
   },
