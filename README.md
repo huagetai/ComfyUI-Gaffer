@@ -54,7 +54,8 @@ comfyui's gaffer
 
 * tips
 
-  Model description and input foreground and background images can be obtained [IC-Light](https://github.com/lllyasviel/IC-Light)
+  * Model description and input foreground and background images can be obtained [IC-Light](https://github.com/lllyasviel/IC-Light)
+  * The overall brightness can be controlled through the grayscale. refer to [grayscaler-compare](examples/workflow-gaffer-grayscaler-compare.json)
 
 ## Nodes
 
