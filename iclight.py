@@ -154,6 +154,7 @@ class ApplyICLight:
                 "positive": ("CONDITIONING",),
                 "negative": ("CONDITIONING",),
                 "fg_pixels": ("IMAGE",),
+                "bg_pixels": ("IMAGE",),
                 "multiplier": ("FLOAT", {"default": 1.0, "min": 0.0, "max": 2.0, "step": 0.001}),
             },
             "optional": {

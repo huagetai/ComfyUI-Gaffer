@@ -86,6 +86,7 @@ comfyui's gaffer
   * negative: negative prompts
   * fg_pixels: foreground image.The background of the foreground image needs to be removed, and it is recommended to set it to a grayscale background.
   * bg_pixels: background image(optional).Required for Background-Conditioned Model.Consistent with the width and height of the foreground image
+  * multiplier: It is recommended to keep the default value
   
   output:
   * model: model with ICLight
