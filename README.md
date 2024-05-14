@@ -140,6 +140,7 @@ comfyui's gaffer
   input:
   * image: transparent background image.
   * mask:  mask indicating areas to be converted to grey.
+  * multiplier: A value to control the intensity of the grey conversion.
   
   output:
   * image: gray background image.
