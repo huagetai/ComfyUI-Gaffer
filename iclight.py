@@ -154,7 +154,7 @@ class ApplyICLight:
                 "positive": ("CONDITIONING",),
                 "negative": ("CONDITIONING",),
                 "fg_pixels": ("IMAGE",),
-                "multiplier": ("FLOAT", {"default": 1.0, "min": 0.0, "max": 10.0, "step": 0.001}),
+                "multiplier": ("FLOAT", {"default": 1.0, "min": 0.0, "max": 2.0, "step": 0.001}),
             },
             "optional": {
                 "bg_pixels": ("IMAGE",),
@@ -431,6 +431,7 @@ class GrayScaler:
             "required": {
                 "image": ("IMAGE",),
                 "mask": ("MASK",),
+                "multiplier": ("FLOAT", {"default": 1.0, "min": 0.0, "max": 2.0, "step": 0.001}),
             }
         }
 
@@ -438,14 +439,14 @@ class GrayScaler:
     RETURN_TYPES = ("IMAGE",)
     FUNCTION = "apply"
 
-    def apply(self, image: torch.Tensor, mask: torch.Tensor):
+    def apply(self, image: torch.Tensor, mask: torch.Tensor, multiplier):
         """
         Applies grey scaling to image regions as indicated by the mask.
 
         Args:
             image: torch.Tensor: The input image tensor.
             mask: torch.Tensor: A mask tensor where 1 indicates areas to be converted to grey.
-
+            multiplier: float: A value to control the intensity of the grey conversion.
         Returns:
             tuple: A tuple containing the image with masked regions turned grey.
         """
@@ -460,8 +461,8 @@ class GrayScaler:
             # [B, H, W] => [B, H, W, C=1]
             mask = mask.unsqueeze(-1)
 
-        # Apply the mask to the image to turn specified regions grey.
-        image = image * mask + (1 - mask) * 0.5
+        grey_value = 0.5 * multiplier
+        image = image * mask + (1 - mask) * grey_value
 
         return (image,)
 
