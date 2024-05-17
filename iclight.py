@@ -1,17 +1,15 @@
 import os
 import logging
-import types
 from typing import TypedDict, Callable
 import torch
 import numpy as np
 import folder_paths
-import comfy
 import comfy.model_management as model_management
 from comfy.sd import VAE
 from comfy.utils import load_torch_file
 from comfy.diffusers_convert import convert_unet_state_dict
 from comfy.ldm.models.autoencoder import AutoencoderKL
-from comfy.model_base import BaseModel
+from comfy.model_base import BaseModel, IP2P
 from comfy.model_patcher import ModelPatcher
 from nodes import MAX_RESOLUTION
 from .utils.image import generate_gradient_image, LightPosition, resize_and_center_crop
@@ -38,30 +36,93 @@ class UnetParams(TypedDict):
     c: dict
     cond_or_uncond: torch.Tensor
 
+class ICLightPatcher():
+    def __init__(self, model: ModelPatcher, vae: VAE, iclight):
+        modelType = str(type(model.model.model_config).__name__)
+        if "SD15" not in modelType:
+            raise Exception(f"Attempted to load {modelType} model, IC-Light is only compatible with SD 1.5 models.")
+        assert isinstance(vae.first_stage_model, AutoencoderKL), "vae only supported for AutoencoderKL"
+        self.vae = vae
 
-class ICLight:
-    def extra_conds(self, **kwargs):
-        out = {}
+        self.device = model_management.get_torch_device()
+        dtype = model_management.unet_dtype()
+        if dtype not in [torch.float32, torch.float16, torch.bfloat16]:
+            dtype = torch.float16 if model_management.should_use_fp16() else torch.float32
+        self.dtype = dtype
+        self.work_model = model.clone()
 
-        image = kwargs.get("concat_latent_image", None)
-        noise = kwargs.get("noise", None)
-        device = kwargs["device"]
+        # Patch ComfyUI's LoRA weight application to accept multi-channel inputs.
+        try:
+            ModelPatcher.calculate_weight = calculate_weight_adjust_channel(ModelPatcher.calculate_weight)
+        except:
+            raise Exception("Could not patch calculate_weight")
 
-        if image is None:
-            image = torch.zeros_like(noise)
+        self.fbc = iclight.get("fbc", False)
+        self.sd_dict = iclight.get("sd_dict", {})
+        in_channels = self.sd_dict["input_blocks.0.0.weight"].shape[1]
+        self.work_model.model.model_config.unet_config["in_channels"] = in_channels
 
-        if image.shape[1:] != noise.shape[1:]:
-            image = comfy.utils.common_upscale(image.to(device), noise.shape[-1], noise.shape[-2], "bilinear", "center")
+        #  add iclight patches
+        self.add_patches_iclight()
+    
+    def encode(self, pixels):
+        original_sample_mode = self.vae.first_stage_model.regularization.sample
+        self.vae.first_stage_model.regularization.sample = False
+        out_samples = self.vae.encode(pixels)
+        self.vae.first_stage_model.regularization.sample = original_sample_mode
+        return out_samples
+    
+    def set_concat_conds(self, fg_pixels, bg_pixels=None):
+        self.fg_samples = self.encode(fg_pixels)
+        if self.fbc:
+            if bg_pixels is None:
+                raise ValueError("When using background-conditioned Model, 'bg_pixel' is required")
 
-        image = comfy.utils.resize_to_batch_size(image, noise.shape[0])
+            bg_pixels = resize_and_center_crop(bg_pixels, fg_pixels.shape[2], fg_pixels.shape[1])
+            self.bg_samples = self.encode(bg_pixels)
+            concat_samples = torch.cat((self.fg_samples, self.bg_samples), dim=1)
+        else:
+            concat_samples = self.fg_samples
 
-        process_image_in = lambda image: image
-        out['c_concat'] = comfy.conds.CONDNoiseShape(process_image_in(image))
+        base_model: BaseModel = self.work_model.model
+        scale_factor = base_model.model_config.latent_format.scale_factor
+        concat_conds = concat_samples * scale_factor
+        concat_conds = torch.cat([c[None, ...] for c in concat_conds], dim=1)
 
-        adm = self.encode_adm(**kwargs)
-        if adm is not None:
-            out['y'] = comfy.conds.CONDRegular(adm)
-        return out
+        self.concat_conds = concat_conds
+        self.set_model_unet_function_wrapper()
+
+    def add_patches_iclight(self):
+        ic_model_state_dict = self.sd_dict
+        self.work_model.add_patches(
+            patches={
+                ("diffusion_model." + key): (value.to(dtype=self.dtype, device=self.device),)
+                for key, value in ic_model_state_dict.items()
+            }
+        )
+
+    def set_model_unet_function_wrapper(self):
+        concat_conds = self.concat_conds
+        def apply_c_concat(params: UnetParams) -> UnetParams:
+            """Apply c_concat on unet call."""
+            sample = params["input"]
+            params["c"]["c_concat"] = torch.cat(
+                ([concat_conds.to(sample.device)] * (sample.shape[0] // concat_conds.shape[0])),
+                dim=0,
+            )
+            return params
+
+        def unet_dummy_apply(unet_apply: Callable, params: UnetParams):
+            """A dummy unet apply wrapper serving as the endpoint of wrapper chain."""
+            return unet_apply(x=params["input"], t=params["timestep"], **params["c"])
+
+        # Compose on existing `model_function_wrapper`.
+        existing_wrapper =  self.work_model.model_options.get("model_function_wrapper", unet_dummy_apply)
+
+        def wrapper_func(unet_apply: Callable, params: UnetParams):
+            return existing_wrapper(unet_apply, params=apply_c_concat(params))
+
+        self.work_model.set_model_unet_function_wrapper(wrapper_func)
 
 
 class ICLightModelLoader:
@@ -73,7 +134,7 @@ class ICLightModelLoader:
         """
         Initializes the ICLight model loader with default state.
         """
-        self.iclight = {"model": None, "sd_dict": None, "fbc": False}
+        self.iclight = {"model": None, "sd_dict": None, "fbc": False} 
 
     @classmethod
     def INPUT_TYPES(cls):
@@ -128,20 +189,7 @@ class ICLightModelLoader:
 
         LOGGER.info(f"ICLight model loaded from {iclight_name}")
         return (self.iclight,)
-
-
-class ICLightVAEEncoder:
-    def __init__(self, vae: VAE):
-        assert isinstance(vae.first_stage_model, AutoencoderKL), "vae only supported for AutoencoderKL"
-        self.vae = vae
-
-    def encode(self, pixels):
-        original_sample_mode = self.vae.first_stage_model.regularization.sample
-        self.vae.first_stage_model.regularization.sample = False
-        out_samples = self.vae.encode(pixels)
-        self.vae.first_stage_model.regularization.sample = original_sample_mode
-        return out_samples
-
+    
 
 class ApplyICLight:
     @classmethod
@@ -167,106 +215,14 @@ class ApplyICLight:
     CATEGORY = "gaffer"
     DESCRIPTION = """"""
 
-    def apply(self, model, vae: VAE, iclight, positive, negative, fg_pixels, multiplier, bg_pixels=None):
-        device = model_management.get_torch_device()
-        dtype = model_management.unet_dtype()
-        if dtype not in [torch.float32, torch.float16, torch.bfloat16]:
-            dtype = torch.float16 if model_management.should_use_fp16() else torch.float32
-        work_model = model.clone()
+    def apply(self, model: ModelPatcher, vae: VAE, iclight, positive, negative, fg_pixels, multiplier, bg_pixels=None):
+        iclightPatcher = ICLightPatcher(model, vae, iclight)
 
-        vae_encode = ICLightVAEEncoder(vae)
+        iclightPatcher.set_concat_conds(fg_pixels, bg_pixels)
 
-        fg_samples = vae_encode.encode(fg_pixels)
+        out_latent = torch.zeros_like(iclightPatcher.fg_samples)
 
-        if iclight.get("fbc", False):
-            if bg_pixels is None:
-                raise ValueError("When using background-conditioned Model, 'bg_pixel' is required")
-            print(fg_pixels.shape)
-            bg_pixels = resize_and_center_crop(bg_pixels, fg_pixels.shape[2], fg_pixels.shape[1])
-            bg_samples = vae_encode.encode(bg_pixels)
-            concat_samples = torch.cat((fg_samples, bg_samples), dim=1)
-        else:
-            concat_samples = fg_samples
-
-        base_model: BaseModel = work_model.model
-        scale_factor = base_model.model_config.latent_format.scale_factor
-        concat_conds = concat_samples * scale_factor * multiplier
-        concat_conds = torch.cat([c[None, ...] for c in concat_conds], dim=1)
-
-        out_latent = torch.zeros_like(fg_samples)
-
-        self._patch_accept_multi_channel_inputs()
-        self._work_model_add_patches_iclight(work_model, iclight, device, dtype)
-
-        self._work_model_set_model_unet_function_wrapper(work_model, concat_conds)
-
-        # positive, negative = self._create_conditionings(positive, negative, concat_conds)
-        # self._work_model_bound_extra_conds(work_model)
-
-        return (work_model, positive, negative, {"samples": out_latent})
-
-    @staticmethod
-    def _patch_accept_multi_channel_inputs():
-        """Patch ComfyUI's LoRA weight application to accept multi-channel inputs."""
-        try:
-            ModelPatcher.calculate_weight = calculate_weight_adjust_channel(ModelPatcher.calculate_weight)
-        except:
-            raise Exception("Could not patch calculate_weight")
-
-    @staticmethod
-    def _work_model_add_patches_iclight(work_model, iclight, device, dtype):
-        ic_model_state_dict = iclight.get("sd_dict", {})
-        work_model.add_patches(
-            patches={
-                ("diffusion_model." + key): (value.to(dtype=dtype, device=device),)
-                for key, value in ic_model_state_dict.items()
-            }
-        )
-
-    @staticmethod
-    def _work_model_set_model_unet_function_wrapper(work_model, concat_conds):
-        def apply_c_concat(params: UnetParams) -> UnetParams:
-            """Apply c_concat on unet call."""
-            sample = params["input"]
-            params["c"]["c_concat"] = torch.cat(
-                ([concat_conds.to(sample.device)] * (sample.shape[0] // concat_conds.shape[0])),
-                dim=0,
-            )
-            return params
-
-        def unet_dummy_apply(unet_apply: Callable, params: UnetParams):
-            """A dummy unet apply wrapper serving as the endpoint of wrapper chain."""
-            return unet_apply(x=params["input"], t=params["timestep"], **params["c"])
-
-        # Compose on existing `model_function_wrapper`.
-        existing_wrapper = work_model.model_options.get("model_function_wrapper", unet_dummy_apply)
-
-        def wrapper_func(unet_apply: Callable, params: UnetParams):
-            return existing_wrapper(unet_apply, params=apply_c_concat(params))
-
-        work_model.set_model_unet_function_wrapper(wrapper_func)
-
-    @staticmethod
-    def _create_conditionings(positive, negative, concat_conds: torch.Tensor):
-        out_conds = []
-        for conditioning in [positive, negative]:
-            c = []
-            for t in conditioning:
-                d = t[1].copy()
-                d["concat_latent_image"] = concat_conds
-                n = [t[0], d]
-                c.append(n)
-            out_conds.append(c)
-        return out_conds
-
-    @staticmethod
-    def _work_model_bound_extra_conds(work_model):
-        # Mimic the existing IP2P class to enable extra_conds
-        def bound_extra_conds(self, **kwargs):
-            return ICLight.extra_conds(self, **kwargs)
-
-        new_extra_conds = types.MethodType(bound_extra_conds, work_model.model)
-        work_model.add_object_patch("extra_conds", new_extra_conds)
+        return (iclightPatcher.work_model, positive, negative, {"samples": out_latent})
 
 
 class LightSource:
@@ -422,6 +378,7 @@ class CalculateNormalMap:
         normal = (normal + 1.0) / 2.0
         normal = torch.clamp(normal, 0, 1)
         return normal
+
 
 class GrayScaler:
     """Class to scale image regions to grey based on provided masks."""
