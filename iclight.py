@@ -38,30 +38,25 @@ class UnetParams(TypedDict):
 
 class ICLightPatch():
     def __init__(self, model: ModelPatcher, vae: VAE, iclight):
-        modelType = str(type(model.model.model_config).__name__)
-        if "SD15" not in modelType:
-            raise Exception(f"Attempted to load {modelType} model, IC-Light is only compatible with SD 1.5 models.")
+        model_type = str(type(model.model.model_config).__name__)
+        if "SD15" not in model_type:
+            raise Exception(f"Attempted to load {model_type} model, IC-Light is only compatible with SD 1.5 models.")
 
         assert isinstance(vae.first_stage_model, AutoencoderKL), "vae only supported for AutoencoderKL"
-        self.vae = vae
 
         self.device = model_management.get_torch_device()
         dtype = model_management.unet_dtype()
         if dtype not in [torch.float32, torch.float16, torch.bfloat16]:
             dtype = torch.float16 if model_management.should_use_fp16() else torch.float32
         self.dtype = dtype
+
         self.work_model = model.clone()
+        self.vae = vae
 
         self.fbc = iclight.get("fbc", False)
         self.sd_dict = iclight.get("sd_dict", {})
 
-        in_channels = self.sd_dict["input_blocks.0.0.weight"].shape[1]
-        self.work_model.model.model_config.unet_config["in_channels"] = in_channels
-
         self.empty_latent = None
-
-        #  add iclight patches
-        self.patch()
     
     def encode(self, pixels):
         original_sample_mode = self.vae.first_stage_model.regularization.sample
@@ -70,8 +65,9 @@ class ICLightPatch():
         self.vae.first_stage_model.regularization.sample = original_sample_mode
         return out_samples
     
-    def set_concat_conds(self, fg_pixels, bg_pixels=None):
+    def get_concat_conds(self, fg_pixels, bg_pixels=None):
         fg_samples = self.encode(fg_pixels)
+        self.empty_latent = torch.zeros_like(fg_samples)
         if self.fbc:
             if bg_pixels is None:
                 raise ValueError("When using background-conditioned Model, 'bg_pixel' is required")
@@ -100,9 +96,9 @@ class ICLightPatch():
 
         self.empty_latent = torch.zeros_like(fg_samples)
 
-        self.set_unet_function_wrapper(concat_conds)
+        return concat_conds
 
-    def patch(self):
+    def patch(self, strength_patch: float):
         # Patch ComfyUI's LoRA weight application to accept multi-channel inputs.
         try:
             ModelPatcher.calculate_weight = calculate_weight_adjust_channel(ModelPatcher.calculate_weight)
@@ -110,11 +106,15 @@ class ICLightPatch():
             raise Exception("Could not patch calculate_weight")
 
         ic_model_state_dict = self.sd_dict
+
+        in_channels = ic_model_state_dict["input_blocks.0.0.weight"].shape[1]
+        self.work_model.model.model_config.unet_config["in_channels"] = in_channels
+
         self.work_model.add_patches(
             patches={
                 ("diffusion_model." + key): (value.to(dtype=self.dtype, device=self.device),)
                 for key, value in ic_model_state_dict.items()
-            }
+            }, strength_patch=strength_patch
         )
 
     def set_unet_function_wrapper(self, concat_conds):
@@ -214,7 +214,7 @@ class ApplyICLight:
                 "positive": ("CONDITIONING",),
                 "negative": ("CONDITIONING",),
                 "fg_pixels": ("IMAGE",),
-                "multiplier": ("FLOAT", {"default": 1.0, "min": 0.0, "max": 2.0, "step": 0.001}),
+                "multiplier": ("FLOAT", {"default": 1.0, "min": -10.0, "max": 10.0, "step": 0.01}),
             },
             "optional": {
                 "bg_pixels": ("IMAGE",),
@@ -228,11 +228,12 @@ class ApplyICLight:
     DESCRIPTION = """"""
 
     def apply(self, model: ModelPatcher, vae: VAE, iclight, positive, negative, fg_pixels, multiplier, bg_pixels=None):
-        iclightPatch = ICLightPatch(model, vae, iclight)
-
-        iclightPatch.set_concat_conds(fg_pixels, bg_pixels)
-
-        return (iclightPatch.work_model, positive, negative, {"samples": iclightPatch.empty_latent})
+        iclight_patch = ICLightPatch(model, vae, iclight)
+        #  add iclight patches
+        iclight_patch.patch(multiplier)
+        concat_conds = iclight_patch.get_concat_conds(fg_pixels, bg_pixels)
+        iclight_patch.set_unet_function_wrapper(concat_conds)
+        return (iclight_patch.work_model, positive, negative, {"samples": iclight_patch.empty_latent})
 
 
 class LightSource:
@@ -398,7 +399,7 @@ class GrayScaler:
             "required": {
                 "image": ("IMAGE",),
                 "mask": ("MASK",),
-                "multiplier": ("FLOAT", {"default": 1.0, "min": 0.0, "max": 2.0, "step": 0.001}),
+                "multiplier": ("FLOAT", {"default": 1.0, "min": 0.0, "max": 10.0, "step": 0.01}),
             }
         }
 
