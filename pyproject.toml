@@ -1,0 +1,15 @@
+[project]
+name = "comfyui-gaffer"
+description = "Nodes:Load ICLight Model,Apply ICLight,Simple Light Source,Calculate Normal Map"
+version = "1.0.0"
+license = "LICENSE"
+dependencies = []
+
+[project.urls]
+Repository = "https://github.com/huagetai/ComfyUI-Gaffer"
+#  Used by Comfy Registry https://comfyregistry.org
+
+[tool.comfy]
+PublisherId = ""
+DisplayName = "ComfyUI-Gaffer"
+Icon = ""
